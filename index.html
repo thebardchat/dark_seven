@@ -50,7 +50,20 @@
     text-align:center;overflow:hidden;background:#000;padding:1.2rem;
   }
   #cross{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-  .hero-inner{position:relative;z-index:2;pointer-events:none;mix-blend-mode:screen}
+  .hero-stage{
+    position:relative;z-index:2;width:100%;max-width:66rem;
+    display:flex;align-items:center;justify-content:center;
+    gap:clamp(1.6rem,5vw,4.5rem);flex-wrap:wrap;
+  }
+  .cover-art{flex:0 0 auto;margin:0;animation:float 7s ease-in-out infinite}
+  .cover-art img{
+    display:block;width:min(300px,68vw);height:auto;max-height:74svh;
+    border:1px solid #2a2a2e;border-radius:3px;
+    box-shadow:0 34px 70px -22px rgba(0,0,0,.95), 0 0 66px -14px rgba(200,22,29,.4);
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .hero-inner{position:relative;z-index:2;pointer-events:none;mix-blend-mode:screen;text-align:left}
+  @media (max-width:760px){ .hero-inner{text-align:center} }
   .hero .series{
     font-family:var(--slate);font-size:clamp(.55rem,1.6vw,.66rem);letter-spacing:.26em;
     text-transform:uppercase;color:#9a9aa1;line-height:2;margin-bottom:1.4rem;
@@ -163,7 +176,7 @@
     color:var(--mute);line-height:2}
   footer .r{color:var(--blood-dark)}
 
-  @media (prefers-reduced-motion:reduce){.drip,.scrolldown{animation:none}}
+  @media (prefers-reduced-motion:reduce){.drip,.scrolldown,.cover-art{animation:none}}
 </style>
 </head>
 <body>
@@ -171,14 +184,19 @@
 <!-- ══ HERO ══ -->
 <header class="hero">
   <canvas id="cross"></canvas>
-  <div class="hero-inner">
-    <div class="series">
-      You Probably Think This Book Is About You<br>
-      Volume Three &middot; The Culmination
+  <div class="hero-stage">
+    <figure class="cover-art">
+      <img src="art/DARK-SEVEN-cover.png" alt="DARK SEVEN: Dark Corridors — the cover. A weathered man in a pale suit emerges from black; the title in blood red." width="600" height="838">
+    </figure>
+    <div class="hero-inner">
+      <div class="series">
+        You Probably Think This Book Is About You<br>
+        Volume Three &middot; The Culmination
+      </div>
+      <h1>It's About<br><span class="yall">All Y'all</span><span class="bang">!</span></h1>
+      <div class="riddle">Black &amp; White &amp; Red All Over</div>
+      <div class="darkseven">Dark Seven</div>
     </div>
-    <h1>It's About<br><span class="yall">All Y'all</span><span class="bang">!</span></h1>
-    <div class="riddle">Black &amp; White &amp; Red All Over</div>
-    <div class="darkseven">Dark Seven</div>
   </div>
   <div class="scrolldown">scroll &darr;</div>
 </header>
