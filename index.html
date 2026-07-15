@@ -166,9 +166,22 @@
   .close .final .r{color:var(--blood)}
   .actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:3rem}
   .btn{font-family:var(--slate);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
-    text-decoration:none;padding:.9rem 1.5rem;border-radius:3px;transition:all .25s;border:1px solid transparent}
+    text-decoration:none;padding:.9rem 1.5rem;border-radius:3px;transition:all .25s;border:1px solid transparent;
+    cursor:pointer;-webkit-appearance:none;appearance:none;line-height:1.2}
   .btn.primary{background:var(--blood);color:var(--bone)}
   .btn.primary:hover{background:var(--blood-bright)}
+
+  /* ── TEASER LIGHTBOX ─────────────────────── */
+  .teaser-modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;
+    background:rgba(3,3,4,.92);backdrop-filter:blur(6px);padding:clamp(1rem,4vw,3rem)}
+  .teaser-modal.open{display:grid}
+  .teaser-modal video{max-width:min(96vw,540px);max-height:90vh;width:auto;height:auto;
+    display:block;border-radius:4px;box-shadow:0 30px 90px -20px #000,0 0 70px -18px rgba(200,22,29,.45)}
+  .teaser-close{position:absolute;top:clamp(.8rem,3vw,1.6rem);right:clamp(.8rem,3vw,1.6rem);
+    width:44px;height:44px;border-radius:50%;border:1px solid #33333a;background:rgba(10,10,11,.8);
+    color:var(--bone);font-family:var(--slate);font-size:1.3rem;line-height:1;cursor:pointer;
+    display:grid;place-items:center;transition:all .2s}
+  .teaser-close:hover{border-color:var(--blood);color:var(--blood-bright)}
   .btn.ghost{border-color:#33333a;color:var(--mute-2)}
   .btn.ghost:hover{border-color:var(--bone);color:var(--bone)}
 
@@ -347,7 +360,7 @@
     </div>
     <p class="final">"It was always about you. It was never only about you. Tried to take my son. I lifted my shield. <span class="r">The Devil does not win.</span>"</p>
     <div class="actions">
-      <a class="btn primary" href="dark-seven-teaser-cross-loop.html">▶ Watch the teaser</a>
+      <button type="button" class="btn primary" id="teaserBtn" aria-haspopup="dialog">▶ Watch the teaser</button>
       <a class="btn ghost" href="https://www.amazon.com/Probably-Think-This-Book-About/dp/B0GT25R5FD">Book One on Amazon</a>
       <a class="btn ghost" href="author.html">About the author</a>
     </div>
@@ -358,6 +371,30 @@
   <p>Written by <span style="color:var(--bone)">Shane Brazelton</span> &middot; Co-built with Claude<br>
   Black &amp; White &amp; <span class="r">Red</span> All Over &middot; The Devil does not win</p>
 </footer>
+
+<!-- ══ TEASER LIGHTBOX ══ -->
+<div class="teaser-modal" id="teaserModal" role="dialog" aria-modal="true" aria-label="DARK SEVEN teaser">
+  <button type="button" class="teaser-close" id="teaserClose" aria-label="Close teaser">✕</button>
+  <video id="teaserVideo" controls playsinline preload="none" poster="hero-poster.jpg">
+    <source src="art/Watch_teaser.mp4" type="video/mp4">
+  </video>
+</div>
+
+<script>
+(() => {
+  const btn=document.getElementById('teaserBtn'), modal=document.getElementById('teaserModal'),
+        close=document.getElementById('teaserClose'), vid=document.getElementById('teaserVideo');
+  if(!btn||!modal) return;
+  const open=()=>{ modal.classList.add('open'); document.body.style.overflow='hidden';
+    try{ vid.currentTime=0; vid.play(); }catch(e){} close.focus(); };
+  const shut=()=>{ modal.classList.remove('open'); document.body.style.overflow='';
+    try{ vid.pause(); }catch(e){} btn.focus(); };
+  btn.addEventListener('click', open);
+  close.addEventListener('click', shut);
+  modal.addEventListener('click', e=>{ if(e.target===modal) shut(); });
+  addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.classList.contains('open')) shut(); });
+})();
+</script>
 
 </body>
 </html>
