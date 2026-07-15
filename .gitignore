@@ -1,0 +1,15 @@
+# Editor / OS cruft
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Local Claude Code settings (machine-specific)
+.claude/settings.local.json
+
+# Pre-color-fix backups are not canon — regenerated on demand
+art/_pre-fix-backup/
+
+# Secrets — never commit API keys
+*.key
+.gemini-key
+.env

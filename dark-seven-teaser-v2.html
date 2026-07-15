@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DARK SEVEN — teaser v2</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;touch-action:none;}
+  #c{display:block;width:100vw;height:100vh;background:#000;cursor:pointer;}
+  #hint{position:fixed;left:0;right:0;bottom:6vh;text-align:center;
+    font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.35em;font-size:11px;
+    color:#7a0d0d;opacity:0;pointer-events:none;text-transform:uppercase;
+    transition:opacity 1.2s ease;mix-blend-mode:screen;}
+  #hint.show{opacity:.55;} #hint.hide{opacity:0;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hint">tap for sound</div>
+<script>
+(() => {
+  const cv = document.getElementById('c');
+  const ctx = cv.getContext('2d', { alpha:false });
+  const bcv = document.createElement('canvas');       // persistent blood layer
+  const bctx = bcv.getContext('2d');
+  const hint = document.getElementById('hint');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let W=0,H=0,DPR=1, gx=0,gy=0,gw=0,gh=0, gTop=0,gBot=0;
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio||1, 2);
+    W=innerWidth; H=innerHeight;
+    for(const c of [cv,bcv]){ c.width=Math.floor(W*DPR); c.height=Math.floor(H*DPR); }
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    bctx.setTransform(DPR,0,0,DPR,0,0);
+    gh = Math.min(W,H)*0.52; gw = gh*0.60; gx=W/2; gy=H*0.52;
+    gTop = gy-gh/2; gBot = gy+gh/2;
+  }
+  addEventListener('resize', resize); resize();
+
+  // ---------- THE OBJECT (swap this to change what the blood covers) ----------
+  // >>>> SWAP HERE: replace sevenPath() with a cross, shield, keyhole, VII, box cutter, etc. <<<<
+  function sevenPath(g){
+    const L=gx-gw/2, R=gx+gw/2, T=gTop, bar=gh*0.20, tipW=gw*0.34;
+    g.beginPath();
+    g.moveTo(L,T);
+    g.lineTo(R,T);
+    g.lineTo(R,T+bar);
+    g.lineTo(gx-gw*0.05+tipW, T+bar);          // inner top of blade
+    g.lineTo(gx-gw*0.16, gBot);                 // blade to bottom tip (left)
+    g.lineTo(gx-gw*0.16-tipW, gBot);            // bottom tip width
+    g.lineTo(gx-gw*0.05, T+bar);                // back up blade inner
+    g.lineTo(L, T+bar);
+    g.closePath();
+  }
+
+  // ---------- BLOOD (viscous, forms at top, runs down over object) ----------
+  const rivs = [];
+  function seedTop(n){
+    const L=gx-gw/2, R=gx+gw/2;
+    for(let i=0;i<n;i++){
+      const x = L + Math.random()*(R-L);
+      rivs.push({ x, y:gTop+Math.random()*4, px:x, py:gTop,
+        w: 3+Math.random()*6, v:0.2+Math.random()*0.5, drift:(Math.random()-0.5)*0.5,
+        wob:Math.random()*6.28, done:false });
+    }
+  }
+  let coverage=0, pool=0;
+
+  function paintRiv(d){
+    // thick glossy segment onto persistent blood layer
+    bctx.lineCap='round'; bctx.lineJoin='round';
+    bctx.strokeStyle='rgba(120,0,0,0.95)'; bctx.lineWidth=d.w;
+    bctx.beginPath(); bctx.moveTo(d.px,d.py); bctx.lineTo(d.x,d.y); bctx.stroke();
+    bctx.strokeStyle='rgba(200,0,0,0.85)'; bctx.lineWidth=Math.max(1,d.w*0.55);
+    bctx.beginPath(); bctx.moveTo(d.px,d.py); bctx.lineTo(d.x,d.y); bctx.stroke();
+    // gloss streak
+    bctx.strokeStyle='rgba(255,120,120,0.35)'; bctx.lineWidth=Math.max(0.6,d.w*0.22);
+    bctx.beginPath(); bctx.moveTo(d.px-d.w*0.18,d.py); bctx.lineTo(d.x-d.w*0.18,d.y); bctx.stroke();
+  }
+  function glossyBead(g,x,y,r){
+    const grd=g.createRadialGradient(x-r*0.35,y-r*0.4,r*0.1, x,y,r);
+    grd.addColorStop(0,'#ff8a8a'); grd.addColorStop(0.35,'#e00000');
+    grd.addColorStop(1,'#7a0000');
+    g.fillStyle=grd; g.beginPath(); g.arc(x,y,r,0,7); g.fill();
+  }
+
+  // ---------- ZAPS ----------
+  const zaps=[]; let flash=0;
+  function lightning(x1,y1,x2,y2,d,dep,p){ if(dep<=0){p.push([x2,y2]);return;}
+    const mx=(x1+x2)/2+(Math.random()-0.5)*d, my=(y1+y2)/2+(Math.random()-0.5)*d;
+    lightning(x1,y1,mx,my,d/2,dep-1,p); lightning(mx,my,x2,y2,d/2,dep-1,p); }
+  function makeZap(){
+    const x1=gx+(Math.random()-0.5)*W*0.5, y1=-10+Math.random()*H*0.1;
+    const x2=gx+(Math.random()-0.5)*gw*0.9, y2=gTop+Math.random()*gh*0.4;
+    const pts=[[x1,y1]]; lightning(x1,y1,x2,y2,Math.min(W,H)*0.28,6,pts);
+    const forks=[]; if(Math.random()<0.7){ const fi=2+(Math.random()*(pts.length-3)|0);
+      const [fx,fy]=pts[fi]||pts[0]; const fp=[[fx,fy]];
+      lightning(fx,fy,fx+(Math.random()-0.5)*W*0.3,fy+H*0.16*Math.random(),Math.min(W,H)*0.13,4,fp); forks.push(fp);}
+    zaps.push({pts,forks,born:performance.now()});
+    flash=Math.min(1,flash+(reduce?0.35:0.7));
+    seedTop(1+(Math.random()*3|0));
+    coverage=Math.min(1, coverage+0.02);
+    if(audio) playZap();
+  }
+
+  // ---------- LOOP STATE ----------
+  let phase='build', phaseT=0, nextZap=performance.now()+400, last=performance.now();
+  const BUILD=9500, DYING=1400, DARK=650;
+  function reset(){ rivs.length=0; zaps.length=0; coverage=0; pool=0; flash=0;
+    bctx.clearRect(0,0,W,H); phase='build'; phaseT=0; nextZap=performance.now()+300; }
+  seedTop(10);
+
+  function frame(now){
+    const dt=Math.min(50,now-last); last=now; phaseT+=dt;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+
+    if(flash>0.001){ ctx.fillStyle='rgba('+(38*flash|0)+',6,6,'+(0.10*flash)+')'; ctx.fillRect(0,0,W,H); }
+
+    // object (dark)
+    if(phase!=='dark'){
+      sevenPath(ctx); ctx.fillStyle='rgba(15,15,15,1)'; ctx.fill();
+      ctx.strokeStyle='rgba(40,40,40,1)'; ctx.lineWidth=1; ctx.stroke();
+
+      // blood FILLING the object from the top, down to the coverage front
+      const front = gTop + coverage*(gBot-gTop);
+      ctx.save(); sevenPath(ctx); ctx.clip();
+      const grd=ctx.createLinearGradient(0,gTop,0,front);
+      grd.addColorStop(0,'#8b0000'); grd.addColorStop(0.7,'#c40000'); grd.addColorStop(1,'#e40000');
+      ctx.fillStyle=grd; ctx.fillRect(gx-gw, gTop, gw*2, front-gTop);
+      // wet front edge
+      const band=ctx.createLinearGradient(0,front-10,0,front+14);
+      band.addColorStop(0,'rgba(255,80,80,0.6)'); band.addColorStop(1,'rgba(228,0,0,0)');
+      ctx.fillStyle=band; ctx.fillRect(gx-gw, front-10, gw*2, 24);
+      ctx.restore();
+
+      // glimpse the object edges when it zaps
+      if(flash>0.02){ ctx.save(); sevenPath(ctx);
+        ctx.shadowBlur=16; ctx.shadowColor='#ff1414';
+        ctx.strokeStyle='rgba(255,90,90,'+(0.7*flash)+')'; ctx.lineWidth=1.4; ctx.stroke();
+        ctx.shadowBlur=0; ctx.strokeStyle='rgba(255,255,255,'+(0.25*flash)+')'; ctx.lineWidth=0.7; ctx.stroke();
+        ctx.restore(); }
+    }
+
+    // persistent blood layer (rivulet streaks + pool) over everything
+    ctx.drawImage(bcv,0,0,W,H);
+
+    // schedule + draw zaps
+    if(phase==='build' && now>nextZap){ makeZap();
+      nextZap = now + (Math.random()<0.28 ? 70+Math.random()*120 : 280+Math.random()*1200); }
+    ctx.lineCap='round'; ctx.lineJoin='round';
+    for(let i=zaps.length-1;i>=0;i--){ const z=zaps[i]; const age=now-z.born;
+      const life=1-age/(reduce?260:180); if(life<=0){zaps.splice(i,1);continue;}
+      const fl=life*(0.6+0.4*Math.sin(age*0.9));
+      const dp=(pts,wd,gl)=>{ ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+        for(let k=1;k<pts.length;k++) ctx.lineTo(pts[k][0],pts[k][1]);
+        ctx.shadowBlur=gl; ctx.shadowColor='#ff1010';
+        ctx.strokeStyle='rgba(255,40,40,'+(0.55*fl)+')'; ctx.lineWidth=wd*2.2; ctx.stroke();
+        ctx.shadowBlur=0; ctx.strokeStyle='rgba(255,255,255,'+(0.9*fl)+')'; ctx.lineWidth=Math.max(0.8,wd*0.7); ctx.stroke(); };
+      dp(z.pts,2.2,22); for(const f of z.forks) dp(f,1.4,14);
+    }
+
+    // update rivulets: advance + paint persistent + wet head bead
+    if(phase!=='dark'){
+      for(let i=rivs.length-1;i>=0;i--){ const d=rivs[i]; if(d.done) continue;
+        d.px=d.x; d.py=d.y; d.wob+=0.2; d.v+=0.012;
+        d.x += d.drift + Math.sin(d.wob)*0.3; d.y += d.v*(dt/16);
+        paintRiv(d);
+        glossyBead(ctx, d.x, d.y, d.w*0.75);
+        if(d.y > H - pool - 4){ pool=Math.min(H*0.16, pool+0.5); d.done=true; }
+      }
+      // pooled blood at the bottom, onto persistent layer
+      if(pool>0){ const py=H-pool;
+        bctx.fillStyle='#9a0000'; bctx.fillRect(0,py,W,pool);
+        bctx.fillStyle='rgba(255,90,90,0.25)'; bctx.fillRect(0,py,W,2); }
+      coverage = Math.min(1, coverage + dt*0.0000); // coverage driven by zaps + gradual below
+      coverage = Math.min(1, coverage + dt*0.00004*(0.5+rivs.filter(r=>!r.done).length*0.02));
+    }
+
+    // phase transitions + fade
+    if(phase==='dying'){ const f=phaseT/DYING;
+      ctx.fillStyle='rgba(0,0,0,'+(0.04+0.5*f)+')'; ctx.fillRect(0,0,W,H);
+      bctx.fillStyle='rgba(0,0,0,'+(0.04+0.12*f)+')'; bctx.fillRect(0,0,W,H); }
+    if(phase==='dark'){ ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H); }
+
+    if(phase==='build' && phaseT>=BUILD){ phase='dying'; phaseT=0; }
+    else if(phase==='dying' && phaseT>=DYING){ phase='dark'; phaseT=0; }
+    else if(phase==='dark' && phaseT>=DARK){ reset(); }
+
+    flash *= (reduce?0.9:0.86);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ---------- AUDIO (bug zapper) ----------
+  let audio=null,noiseBuf=null,master=null;
+  function initAudio(){ if(audio) return;
+    try{ audio=new (window.AudioContext||window.webkitAudioContext)();
+      master=audio.createGain(); master.gain.value=0.9; master.connect(audio.destination);
+      const len=audio.sampleRate*0.5; noiseBuf=audio.createBuffer(1,len,audio.sampleRate);
+      const d=noiseBuf.getChannelData(0); for(let i=0;i<len;i++) d[i]=Math.random()*2-1;
+      const hum=audio.createOscillator(); hum.type='sawtooth'; hum.frequency.value=60;
+      const lp=audio.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=140;
+      const g=audio.createGain(); g.gain.value=0.015; hum.connect(lp); lp.connect(g); g.connect(master); hum.start();
+    }catch(e){ audio=null; } }
+  function playZap(){ if(!audio) return; const t=audio.currentTime;
+    const n=1+(Math.random()*2|0);
+    for(let c=0;c<n;c++){ const st=t+c*(0.01+Math.random()*0.03);
+      const src=audio.createBufferSource(); src.buffer=noiseBuf; src.playbackRate.value=0.8+Math.random()*0.9;
+      const bp=audio.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1800+Math.random()*3500; bp.Q.value=0.7+Math.random();
+      const hp=audio.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=900;
+      const g=audio.createGain(); const pk=0.28+Math.random()*0.22, dur=0.05+Math.random()*0.09;
+      g.gain.setValueAtTime(0.0001,st); g.gain.exponentialRampToValueAtTime(pk,st+0.004);
+      g.gain.exponentialRampToValueAtTime(0.0001,st+dur);
+      src.connect(bp); bp.connect(hp); hp.connect(g); g.connect(master); src.start(st); src.stop(st+dur+0.02); } }
+  cv.addEventListener('pointerdown', ()=>{ initAudio(); if(audio&&audio.state==='suspended') audio.resume();
+    hint.classList.remove('show'); hint.classList.add('hide'); }, {once:true});
+  setTimeout(()=>{ if(!audio) hint.classList.add('show'); }, 1400);
+})();
+</script>
+</body>
+</html>

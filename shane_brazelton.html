@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shane Brazelton | Noir Literary Author</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+
+        :root {
+            --black:    #000000;
+            --white:    #FFFFFF;
+            --red:      #FF0000;
+            --off:      #D8D8D8;
+            --muted:    #666666;
+            --dim:      #2a2a2a;
+            --F: 'Abril Fatface', serif;
+            --B: 'Inter', sans-serif;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--B);
+            font-size: 18px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: var(--black); }
+        ::-webkit-scrollbar-thumb { background: var(--red); }
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 48px;
+            mix-blend-mode: normal;
+            transition: background 0.4s;
+        }
+
+        nav.scrolled {
+            background: rgba(0,0,0,0.92);
+            border-bottom: 1px solid #1c1c1c;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-logo {
+            font-family: var(--F);
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 36px;
+        }
+
+        .nav-links a {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--red); }
+
+        /* ─── HERO ─── */
+        #hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .hero-photo {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            display: block;
+            transform: scale(1.04);
+            animation: slowzoom 12s ease-out forwards;
+        }
+
+        @keyframes slowzoom {
+            from { transform: scale(1.04); }
+            to   { transform: scale(1.0); }
+        }
+
+        /* Dark gradient so text reads over photo */
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.1) 100%),
+                linear-gradient(to right, rgba(0,0,0,0.6) 0%, transparent 60%);
+        }
+
+        /* Red slit — top edge */
+        .hero-redline {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--red);
+            transform-origin: left;
+            animation: redslide 1.2s 0.3s cubic-bezier(0.77,0,0.18,1) both;
+        }
+
+        @keyframes redslide {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            padding: 0 56px 72px;
+            width: 100%;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeup 0.8s 0.8s ease both;
+        }
+
+        .hero-name {
+            font-family: var(--F);
+            font-size: clamp(4.5rem, 13vw, 11rem);
+            line-height: 0.88;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 36px;
+            opacity: 0;
+            animation: fadeup 0.8s 1s ease both;
+        }
+
+        .hero-name .surname {
+            display: block;
+            color: var(--red);
+        }
+
+        .hero-tagline {
+            border-left: 3px solid var(--red);
+            padding-left: 22px;
+            max-width: 520px;
+            opacity: 0;
+            animation: fadeup 0.8s 1.2s ease both;
+        }
+
+        .hero-tagline p {
+            font-size: clamp(1rem, 2.2vw, 1.35rem);
+            font-weight: 300;
+            color: var(--off);
+            line-height: 1.7;
+        }
+
+        .hero-tagline p strong {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* tiny file detail, bottom right */
+        .hero-case {
+            position: absolute;
+            bottom: 28px;
+            right: 48px;
+            z-index: 10;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            opacity: 0;
+            animation: fadeup 0.8s 1.6s ease both;
+        }
+
+        @keyframes fadeup {
+            from { opacity:0; transform: translateY(18px); }
+            to   { opacity:1; transform: translateY(0); }
+        }
+
+        /* ─── DIVIDER ─── */
+        .red-rule {
+            width: 100%;
+            height: 2px;
+            background: var(--red);
+        }
+
+        /* ─── SECTION UTILITY ─── */
+        .eyebrow {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── ABOUT ─── */
+        #about {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .about-text {
+            padding: 80px 56px;
+            border-top: 1px solid var(--dim);
+        }
+
+        .about-text h2 {
+            font-family: var(--F);
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            text-transform: uppercase;
+            line-height: 0.95;
+            margin-bottom: 40px;
+        }
+
+        .about-text h2 em {
+            font-style: normal;
+            color: var(--red);
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: var(--off);
+            line-height: 1.85;
+            max-width: 560px;
+            margin-bottom: 22px;
+        }
+
+        .about-text p strong {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* pull quote */
+        .pull-quote {
+            margin: 40px 0;
+            padding: 28px 0 28px 28px;
+            border-left: 4px solid var(--red);
+        }
+
+        .pull-quote p {
+            font-family: var(--F);
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            line-height: 1.3;
+            color: var(--white);
+            font-weight: normal;
+            margin: 0;
+        }
+
+        /* ─── BOOKS ─── */
+        #books {
+            padding: 100px 56px;
+            border-top: 1px solid var(--dim);
+        }
+
+        #books > h2 {
+            font-family: var(--F);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            text-transform: uppercase;
+            margin-bottom: 64px;
+        }
+
+        #books > h2 span { color: var(--red); }
+
+        .book-card {
+            display: grid;
+            grid-template-columns: 1fr;
+            border-top: 1px solid var(--dim);
+            padding: 48px 0;
+            gap: 24px;
+            transition: border-color 0.3s;
+            cursor: default;
+        }
+
+        .book-card:last-child {
+            border-bottom: 1px solid var(--dim);
+        }
+
+        .book-card:hover {
+            border-top-color: var(--red);
+        }
+
+        .book-card:hover .book-number {
+            color: var(--red);
+        }
+
+        .book-meta {
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .book-number {
+            font-family: var(--F);
+            font-size: 3.5rem;
+            color: var(--dim);
+            line-height: 1;
+            transition: color 0.3s;
+        }
+
+        .book-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border: 1px solid;
+        }
+
+        .book-badge.live   { border-color: var(--white); color: var(--white); }
+        .book-badge.soon   { border-color: var(--red);   color: var(--red);   }
+
+        .book-body {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .book-title {
+            font-family: var(--F);
+            font-size: clamp(1.6rem, 4vw, 2.8rem);
+            text-transform: uppercase;
+            line-height: 1.05;
+            color: var(--off);
+        }
+
+        .book-subtitle {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .book-desc {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--muted);
+            max-width: 680px;
+            line-height: 1.75;
+        }
+
+        .book-desc strong {
+            color: var(--off);
+            font-weight: 400;
+        }
+
+        .book-link {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+            border-bottom: 2px solid var(--red);
+            padding-bottom: 3px;
+            align-self: flex-start;
+            transition: color 0.2s;
+        }
+
+        .book-link:hover { color: var(--red); }
+
+        /* ─── PARADOX ─── */
+        #paradox {
+            padding: 140px 56px;
+            text-align: center;
+            border-top: 1px solid var(--dim);
+            border-bottom: 1px solid var(--dim);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #paradox::before {
+            content: '"';
+            position: absolute;
+            font-family: var(--F);
+            font-size: 40vw;
+            color: #0d0d0d;
+            top: -10%;
+            left: 50%;
+            transform: translateX(-50%);
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .paradox-line {
+            font-family: var(--F);
+            font-size: clamp(2.5rem, 7vw, 6.5rem);
+            text-transform: uppercase;
+            line-height: 1;
+            display: block;
+            position: relative;
+        }
+
+        .paradox-line.first  { color: var(--white);  margin-bottom: 8px; }
+        .paradox-line.second { color: var(--red); }
+
+        .paradox-note {
+            margin-top: 48px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* ─── CONTACT ─── */
+        #contact {
+            padding: 120px 56px;
+            border-top: 2px solid var(--red);
+        }
+
+        #contact h2 {
+            font-family: var(--F);
+            font-size: clamp(3rem, 8vw, 7rem);
+            text-transform: uppercase;
+            line-height: 0.9;
+            margin-bottom: 56px;
+        }
+
+        #contact h2 span { color: var(--red); }
+
+        .contact-cta {
+            display: inline-block;
+            font-family: var(--F);
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--black);
+            background: var(--white);
+            padding: 20px 52px;
+            border: 3px solid var(--white);
+            transition: all 0.25s;
+        }
+
+        .contact-cta:hover {
+            background: transparent;
+            color: var(--red);
+            border-color: var(--red);
+        }
+
+        .contact-sub {
+            margin-top: 28px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            padding: 36px 56px;
+            border-top: 1px solid var(--dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        footer a { color: var(--muted); text-decoration: none; }
+        footer a:hover { color: var(--red); }
+
+        /* ─── DESKTOP ─── */
+        @media (min-width: 900px) {
+            #about {
+                grid-template-columns: 1fr 1fr;
+                min-height: 90vh;
+            }
+
+            .about-photo-col {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .about-photo-col img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center 15%;
+                display: block;
+            }
+
+            .about-text {
+                padding: 100px 72px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border-top: none;
+                border-left: 1px solid var(--dim);
+            }
+
+            .book-card {
+                grid-template-columns: 120px 1fr;
+                align-items: start;
+                gap: 0 40px;
+            }
+
+            .book-body {
+                border-left: 1px solid var(--dim);
+                padding-left: 40px;
+            }
+
+            .book-card:hover .book-body {
+                border-left-color: var(--red);
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav { padding: 16px 24px; }
+            .nav-links { display: none; }
+            .hero-content { padding: 0 28px 56px; }
+            .hero-case { display: none; }
+            #about .about-photo-col { display: block; height: 60vw; overflow: hidden; position: relative; }
+            #about .about-photo-col img { position: absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position: center 15%; }
+            .about-text { padding: 56px 28px; }
+            #books { padding: 72px 28px; }
+            #paradox { padding: 100px 28px; }
+            #contact { padding: 80px 28px; }
+            footer { padding: 28px 24px; flex-direction: column; gap: 10px; text-align: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <a href="#hero" class="nav-logo">Shane Brazelton</a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#books">Books</a></li>
+            <li><a href="#paradox">The Series</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-redline"></div>
+        <img class="hero-photo" src="shane_noir_portrait.png" alt="Shane Brazelton">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <p class="hero-eyebrow">Noir &nbsp;·&nbsp; Literary Author &nbsp;·&nbsp; North Alabama</p>
+            <h1 class="hero-name">
+                Shane
+                <span class="surname">Brazelton</span>
+            </h1>
+            <div class="hero-tagline">
+                <p>It was always about you.</p>
+                <p><strong>It was never only about you.</strong></p>
+            </div>
+        </div>
+
+        <p class="hero-case">Case file open &nbsp;/&nbsp; Vol. I–III &nbsp;/&nbsp; Classified</p>
+    </section>
+
+    <div class="red-rule"></div>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <!-- Mobile: block. Desktop: left column, sticky photo -->
+        <div class="about-photo-col">
+            <img src="shane_noir_portrait.png" alt="Shane Brazelton">
+        </div>
+
+        <div class="about-text">
+            <span class="eyebrow reveal">The Author</span>
+            <h2 class="reveal">Concrete.<br><em>By Day.</em></h2>
+
+            <p class="reveal">Shane Brazelton dispatches 14 concrete trucks across North Alabama before most people are awake. He records his books on the pre-dawn commute — stream-of-consciousness, voice-to-text, doing 70 on the highway in the dark.</p>
+
+            <div class="pull-quote reveal">
+                <p>"Nobody asked him to build this.<br>He did it anyway."</p>
+            </div>
+
+            <p class="reveal">The manuscripts get pressed into noir by an AI built on a Raspberry Pi in a closet in Hazel Green, Alabama. <strong>No publishing deal. No literary agent. No permission.</strong></p>
+
+            <p class="reveal">The work is dark but not hopeless. Cynical but anchored. The Devil does not win in these pages. That's not a spoiler — that's the whole constitution.</p>
+        </div>
+    </section>
+
+    <!-- BOOKS -->
+    <section id="books">
+        <span class="eyebrow reveal">The Work</span>
+        <h2 class="reveal">Three <span>Volumes.</span><br>One Spine.</h2>
+
+        <!-- VOL 1 -->
+        <div class="book-card reveal">
+            <div class="book-meta">
+                <span class="book-number">01</span>
+                <span class="book-badge live">Available Now</span>
+            </div>
+            <div class="book-body">
+                <p class="book-subtitle">The Book</p>
+                <h3 class="book-title">You Probably Think<br>This Book Is About You</h3>
+                <p class="book-desc">
+                    A detective who becomes the subject of his own investigation. <strong>22 noir vignettes pressed from a voice recorder on a highway at 4 AM.</strong> The one that started everything. Written by a man who had no business writing it and did it anyway.
+                </p>
+                <a href="https://www.amazon.com/dp/YOUR-ASIN-HERE" class="book-link" target="_blank">Get the Book →</a>
+            </div>
+        </div>
+
+        <!-- VOL 2 -->
+        <div class="book-card reveal">
+            <div class="book-meta">
+                <span class="book-number">02</span>
+                <span class="book-badge soon">Coming Soon</span>
+            </div>
+            <div class="book-body">
+                <p class="book-subtitle">The Record</p>
+                <h3 class="book-title">You Probably Think<br>This Song Is About You Too</h3>
+                <p class="book-desc">
+                    The detective ripped out of his own body and dropped into a European diner. <strong>Living one second over and over from nine different perspectives,</strong> trying to change a tragic outcome he can never avert. 17 tracks. A noir song cycle. The second side of the same record.
+                </p>
+                <a href="#contact" class="book-link">Get Notified →</a>
+            </div>
+        </div>
+
+        <!-- VOL 3 -->
+        <div class="book-card reveal">
+            <div class="book-meta">
+                <span class="book-number">03</span>
+                <span class="book-badge soon">Coming Soon</span>
+            </div>
+            <div class="book-body">
+                <p class="book-subtitle">The Graphic Novel</p>
+                <h3 class="book-title">Dark Seven</h3>
+                <p class="book-desc">
+                    Three inks. Black — the world and the dark. White — grace, the shield, reserved and rare. Red — <strong>blood, and blood only.</strong> A spine. A scar. A Celtic cross tattooed over the wound. Six cuts that go deeper than the last. The binding of this book is a man's back.
+                </p>
+                <a href="#contact" class="book-link">Get Notified →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PARADOX -->
+    <section id="paradox">
+        <span class="eyebrow reveal" style="margin-bottom:48px; display:block;">The Thread</span>
+        <span class="paradox-line first reveal">It was always</span>
+        <span class="paradox-line first reveal">about you.</span>
+        <br>
+        <span class="paradox-line second reveal">It was never</span>
+        <span class="paradox-line second reveal">only about you.</span>
+        <p class="paradox-note reveal">Three volumes. One ending. You already know how it goes.</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <span class="eyebrow reveal">Make Contact</span>
+        <h2 class="reveal">Step Into<br>The <span>Light</span></h2>
+        <a href="mailto:contact@shanebrazelton.com" class="contact-cta reveal">Make Contact</a>
+        <p class="contact-sub reveal">Built on a Raspberry Pi. In a closet. In Alabama.</p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span>© 2026 Shane Brazelton</span>
+        <span><a href="mailto:contact@shanebrazelton.com">contact@shanebrazelton.com</a></span>
+    </footer>
+
+    <script>
+        // Nav: add .scrolled class after scroll
+        const nav = document.getElementById('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 60);
+        }, { passive: true });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

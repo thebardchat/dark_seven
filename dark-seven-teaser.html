@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DARK SEVEN — teaser</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;touch-action:none;}
+  #c{display:block;width:100vw;height:100vh;background:#000;cursor:pointer;}
+  #hint{
+    position:fixed;left:0;right:0;bottom:6vh;text-align:center;
+    font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.35em;
+    font-size:11px;color:#7a0d0d;opacity:.0;pointer-events:none;
+    text-transform:uppercase;transition:opacity 1.2s ease;mix-blend-mode:screen;
+  }
+  #hint.show{opacity:.55;}
+  #hint.hide{opacity:0;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hint">tap for sound</div>
+<script>
+(() => {
+  const cv = document.getElementById('c');
+  const ctx = cv.getContext('2d', { alpha: false });
+  const hint = document.getElementById('hint');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let W = 0, H = 0, DPR = 1;
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = Math.floor(W * DPR); cv.height = Math.floor(H * DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  window.addEventListener('resize', resize); resize();
+
+  // ---------- THE SECRET (what the red keeps covering) ----------
+  // Deliberately unresolved — a shrouded shape you can't quite read.
+  // >>> SWAP HERE later: draw the 7, the shield, the title, a face, whatever it turns out to be. <<<
+  function drawSecret(alpha, lit){
+    const cx = W/2, cy = H*0.54, s = Math.min(W,H)*0.42;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    // body / shroud
+    ctx.beginPath();
+    ctx.moveTo(cx - s*0.42, cy + s*0.65);
+    ctx.quadraticCurveTo(cx - s*0.55, cy - s*0.05, cx - s*0.20, cy - s*0.42);
+    ctx.quadraticCurveTo(cx - s*0.10, cy - s*0.60, cx, cy - s*0.60);
+    ctx.quadraticCurveTo(cx + s*0.10, cy - s*0.60, cx + s*0.20, cy - s*0.42);
+    ctx.quadraticCurveTo(cx + s*0.55, cy - s*0.05, cx + s*0.42, cy + s*0.65);
+    ctx.closePath();
+    if(lit > 0){
+      // during a zap: glimpse the outline in red/white, then it's gone
+      ctx.globalAlpha = alpha * lit;
+      ctx.lineWidth = 1.5;
+      ctx.shadowBlur = 18; ctx.shadowColor = '#ff1414';
+      ctx.strokeStyle = 'rgba(255,90,90,'+(0.5*lit)+')';
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = 'rgba(255,255,255,'+(0.22*lit)+')';
+      ctx.lineWidth = 0.7; ctx.stroke();
+    } else {
+      ctx.fillStyle = 'rgba(16,16,16,1)';
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // ---------- ZAPS ----------
+  const zaps = [];
+  function lightning(x1,y1,x2,y2,disp,depth,pts){
+    if(depth<=0){ pts.push([x2,y2]); return; }
+    const mx=(x1+x2)/2 + (Math.random()-0.5)*disp;
+    const my=(y1+y2)/2 + (Math.random()-0.5)*disp;
+    lightning(x1,y1,mx,my,disp/2,depth-1,pts);
+    lightning(mx,my,x2,y2,disp/2,depth-1,pts);
+  }
+  function makeZap(){
+    // arc down over the secret so it "zaps" the covered thing
+    const x1 = W*0.5 + (Math.random()-0.5)*W*0.5;
+    const y1 = -10 + Math.random()*H*0.12;
+    const x2 = W*0.5 + (Math.random()-0.5)*W*0.35;
+    const y2 = H*0.35 + Math.random()*H*0.4;
+    const pts=[[x1,y1]];
+    lightning(x1,y1,x2,y2, Math.min(W,H)*0.28, 6, pts);
+    const forks=[];
+    if(Math.random()<0.7){
+      const fi=2+Math.floor(Math.random()*(pts.length-3));
+      const [fx,fy]=pts[fi]||pts[0];
+      const fp=[[fx,fy]];
+      lightning(fx,fy, fx+(Math.random()-0.5)*W*0.3, fy+H*0.18*Math.random(), Math.min(W,H)*0.14,4,fp);
+      forks.push(fp);
+    }
+    zaps.push({ pts, forks, life:1, born:performance.now() });
+    flash = Math.min(1, flash + (reduce?0.35:0.75));
+    // each zap sheds some red drips
+    const n = 2 + (Math.random()*4|0);
+    for(let i=0;i<n;i++) spawnDrip(x2 + (Math.random()-0.5)*W*0.3);
+    coverage = Math.min(1, coverage + 0.03);
+    if(audio) playZap();
+  }
+
+  // ---------- DRIPS (blood, covering the something) ----------
+  const drips = [];
+  function spawnDrip(x){
+    x = Math.max(6, Math.min(W-6, x));
+    drips.push({ x, y: H*0.30 + Math.random()*H*0.2, v: 0.4+Math.random()*0.8,
+                 w: 1+Math.random()*2.2, len:0, bead: 2+Math.random()*3 });
+  }
+  let pool = 0; // red rising from the bottom
+
+  // ---------- LOOP STATE ----------
+  let flash = 0;
+  let coverage = 0;
+  let phase = 'build';       // build -> dying -> dark -> (reset)
+  let phaseT = 0;
+  let nextZap = 0;
+  const BUILD_MS = 9000, DYING_MS = 1300, DARK_MS = 700;
+
+  function reset(){
+    zaps.length=0; drips.length=0; coverage=0; pool=0; flash=0;
+    phase='build'; phaseT=0; nextZap=performance.now()+300;
+  }
+  nextZap = performance.now()+400;
+
+  // ---------- RENDER ----------
+  let last = performance.now();
+  function frame(now){
+    const dt = Math.min(50, now-last); last=now;
+    phaseT += dt;
+
+    // fade the previous frame -> trails + eventual fade to black
+    let fade = 0.18;
+    if(phase==='dying'){ fade = 0.06 + 0.5*(phaseT/DYING_MS); }
+    if(phase==='dark'){ fade = 0.9; }
+    ctx.fillStyle = 'rgba(0,0,0,'+fade+')';
+    ctx.fillRect(0,0,W,H);
+
+    // background lift on flash (kept gentle — no harsh strobe)
+    if(flash>0.001){
+      ctx.fillStyle='rgba('+(40*flash|0)+','+(6*flash|0)+','+(6*flash|0)+','+(0.10*flash)+')';
+      ctx.fillRect(0,0,W,H);
+    }
+
+    // the covered thing (faint, steady; glimpsed brighter on flash)
+    if(phase!=='dark'){
+      const baseA = 0.14 * (1 - coverage*0.5);
+      drawSecret(baseA, 0);
+      if(flash>0.02) drawSecret(0.9, flash);
+    }
+
+    // schedule zaps
+    if(phase==='build' && now>nextZap){
+      makeZap();
+      // erratic timing, occasional rapid bursts
+      const burst = Math.random()<0.28;
+      nextZap = now + (burst ? 70+Math.random()*120 : 260+Math.random()*1200);
+    }
+
+    // draw zaps
+    ctx.lineCap='round'; ctx.lineJoin='round';
+    for(let i=zaps.length-1;i>=0;i--){
+      const z=zaps[i];
+      const age=(now-z.born);
+      z.life = 1 - age/ (reduce?260:180);
+      if(z.life<=0){ zaps.splice(i,1); continue; }
+      const fl = z.life * (0.6+0.4*Math.sin(age*0.9)); // flicker
+      const drawPath=(pts,wid,glow)=>{
+        ctx.beginPath();
+        ctx.moveTo(pts[0][0],pts[0][1]);
+        for(let k=1;k<pts.length;k++) ctx.lineTo(pts[k][0],pts[k][1]);
+        ctx.shadowBlur=glow; ctx.shadowColor='#ff1010';
+        ctx.strokeStyle='rgba(255,40,40,'+(0.55*fl)+')'; ctx.lineWidth=wid*2.2; ctx.stroke();
+        ctx.shadowBlur=0;
+        ctx.strokeStyle='rgba(255,255,255,'+(0.9*fl)+')'; ctx.lineWidth=Math.max(0.8,wid*0.7); ctx.stroke();
+      };
+      drawPath(z.pts, 2.2, 22);
+      for(const f of z.forks) drawPath(f, 1.4, 14);
+    }
+
+    // update + draw drips
+    ctx.shadowBlur=0;
+    for(let i=drips.length-1;i>=0;i--){
+      const d=drips[i];
+      d.v += 0.02; d.y += d.v*(dt/16); d.len += d.v*(dt/16);
+      // trail
+      ctx.strokeStyle='rgba(150,0,0,0.5)'; ctx.lineWidth=d.w;
+      ctx.beginPath(); ctx.moveTo(d.x, d.y-Math.min(d.len,H*0.25)); ctx.lineTo(d.x,d.y); ctx.stroke();
+      // bead
+      ctx.fillStyle='#d50000'; ctx.beginPath(); ctx.arc(d.x,d.y,d.bead,0,7); ctx.fill();
+      ctx.fillStyle='rgba(255,120,120,0.5)'; ctx.beginPath(); ctx.arc(d.x-0.6,d.y-0.6,d.bead*0.4,0,7); ctx.fill();
+      if(d.y > H - pool){ pool = Math.min(H*0.5, pool + 0.4); drips.splice(i,1); }
+    }
+
+    // red rising pool + veil creeping over the secret (the "covering")
+    if(phase!=='dark' && (pool>0 || coverage>0)){
+      const veilTop = H*0.55 - coverage*H*0.35;
+      const g = ctx.createLinearGradient(0, H-pool-H*0.35, 0, H);
+      g.addColorStop(0,'rgba(120,0,0,0)');
+      g.addColorStop(1,'rgba(150,0,0,'+(0.5+0.3*coverage)+')');
+      ctx.fillStyle=g; ctx.fillRect(0, Math.min(veilTop, H-pool-H*0.30), W, H);
+    }
+
+    // phase transitions
+    if(phase==='build' && phaseT>=BUILD_MS){ phase='dying'; phaseT=0; }
+    else if(phase==='dying' && phaseT>=DYING_MS){ phase='dark'; phaseT=0; }
+    else if(phase==='dark' && phaseT>=DARK_MS){ reset(); }
+
+    flash *= (reduce?0.90:0.86);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // ---------- AUDIO (bug zapper) ----------
+  let audio=null, drone=null, noiseBuf=null, master=null;
+  function initAudio(){
+    if(audio) return;
+    try{
+      audio = new (window.AudioContext||window.webkitAudioContext)();
+      master = audio.createGain(); master.gain.value=0.9; master.connect(audio.destination);
+      // pre-baked white noise
+      const len = audio.sampleRate*0.5;
+      noiseBuf = audio.createBuffer(1,len,audio.sampleRate);
+      const dch = noiseBuf.getChannelData(0);
+      for(let i=0;i<len;i++) dch[i]=Math.random()*2-1;
+      // faint electrical mains hum (the zapper idling)
+      const hum = audio.createOscillator(); hum.type='sawtooth'; hum.frequency.value=60;
+      const humLp = audio.createBiquadFilter(); humLp.type='lowpass'; humLp.frequency.value=140;
+      const humG = audio.createGain(); humG.gain.value=0.015;
+      hum.connect(humLp); humLp.connect(humG); humG.connect(master); hum.start();
+      drone=hum;
+    }catch(e){ audio=null; }
+  }
+  function playZap(){
+    if(!audio) return;
+    const t=audio.currentTime;
+    const crackles = 1 + (Math.random()*2|0);
+    for(let c=0;c<crackles;c++){
+      const st = t + c*(0.01+Math.random()*0.03);
+      const src=audio.createBufferSource(); src.buffer=noiseBuf;
+      src.playbackRate.value=0.8+Math.random()*0.9;
+      const bp=audio.createBiquadFilter(); bp.type='bandpass';
+      bp.frequency.value=1800+Math.random()*3500; bp.Q.value=0.7+Math.random();
+      const hp=audio.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=900;
+      const g=audio.createGain();
+      const peak=0.28+Math.random()*0.22, dur=0.05+Math.random()*0.09;
+      g.gain.setValueAtTime(0.0001,st);
+      g.gain.exponentialRampToValueAtTime(peak,st+0.004);
+      g.gain.exponentialRampToValueAtTime(0.0001,st+dur);
+      src.connect(bp); bp.connect(hp); hp.connect(g); g.connect(master);
+      src.start(st); src.stop(st+dur+0.02);
+    }
+  }
+  function enableSound(){
+    initAudio();
+    if(audio && audio.state==='suspended') audio.resume();
+    hint.classList.remove('show'); hint.classList.add('hide');
+  }
+  cv.addEventListener('pointerdown', enableSound, {once:true});
+
+  // show the hint once the loop is going
+  setTimeout(()=>{ if(!audio) hint.classList.add('show'); }, 1400);
+})();
+</script>
+</body>
+</html>

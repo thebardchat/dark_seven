@@ -1,0 +1,131 @@
+<title>It's About All Y'all — Cover Mockup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --ink:#0a0a0b;
+    --bone:#f3f1ea;
+    --blood:#c8161d;
+    --blood-dark:#7c0d11;
+    --slate:ui-monospace,"SFMono-Regular",Menlo,"Courier New",monospace;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#0a0a0b;min-height:100%}
+  body{
+    font-family:var(--serif);color:var(--bone);
+    display:flex;flex-direction:column;align-items:center;
+    padding:clamp(1.5rem,5vw,4rem) 1rem;gap:2rem;overflow-x:hidden;
+  }
+
+  /* ── THE COVER ─────────────────────────── */
+  .cover{
+    width:min(92vw,420px);aspect-ratio:2/3;
+    background:var(--ink);
+    border:1px solid #1e1e22;
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.03) inset;
+    display:flex;flex-direction:column;
+    padding:clamp(1.4rem,4vw,2.2rem);
+    position:relative;overflow:hidden;
+  }
+
+  /* series eyebrow */
+  .series{
+    font-family:var(--slate);font-size:.6rem;letter-spacing:.28em;
+    text-transform:uppercase;color:#6a6a70;text-align:center;line-height:1.9;
+  }
+  .series b{color:#9a9aa1;font-weight:400}
+
+  /* the three boxes — the design law */
+  .boxes{
+    display:flex;gap:clamp(.5rem,2.5vw,.9rem);justify-content:center;
+    margin:clamp(1.6rem,5vw,2.6rem) 0 clamp(1.2rem,4vw,2rem);
+  }
+  .box{
+    width:clamp(52px,18vw,82px);aspect-ratio:1;
+    position:relative;
+  }
+  .box.black{background:#050506;border:1px solid #222}
+  .box.white{background:var(--bone)}
+  .box.red{background:var(--blood);position:relative;overflow:visible}
+  .box .lbl{
+    position:absolute;bottom:-1.25rem;left:0;right:0;text-align:center;
+    font-family:var(--slate);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:#4a4a50;
+  }
+  /* dripping blood off the red box */
+  .drip{position:absolute;top:100%;background:var(--blood);width:6px;border-radius:0 0 6px 6px;transform-origin:top;animation:ooze 4s ease-in-out infinite}
+  .drip::after{content:"";position:absolute;left:50%;top:100%;width:9px;height:9px;background:var(--blood);border-radius:50%;transform:translate(-50%,-30%)}
+  .drip.d1{left:16%;height:34px;animation-delay:0s}
+  .drip.d2{left:44%;height:54px;width:7px;animation-delay:.8s}
+  .drip.d3{left:72%;height:26px;animation-delay:1.6s}
+  .drip.d4{left:86%;height:40px;width:5px;animation-delay:2.3s}
+  @keyframes ooze{
+    0%,100%{transform:scaleY(.9)}
+    50%{transform:scaleY(1.08)}
+  }
+  /* a small pool building at the base */
+  .pool{
+    height:0;margin-top:auto;
+  }
+
+  /* title */
+  .title-wrap{margin-top:auto;text-align:center}
+  .kicker{
+    font-family:var(--slate);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;
+    color:#7a7a80;margin-bottom:.7rem;
+  }
+  h1{
+    font-family:var(--serif);font-weight:700;font-style:italic;
+    font-size:clamp(2rem,8.5vw,2.9rem);line-height:.98;letter-spacing:-.01em;
+    color:var(--bone);text-wrap:balance;
+  }
+  h1 .yall{color:var(--blood);font-style:italic}
+  h1 .bang{color:var(--blood)}
+  .riddle{
+    font-family:var(--slate);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+    color:#8a8a90;margin-top:1rem;line-height:1.8;
+  }
+  .darkseven{
+    font-family:var(--slate);font-size:.58rem;letter-spacing:.42em;text-transform:uppercase;
+    color:var(--blood-dark);margin-top:1.3rem;
+  }
+  .author{
+    font-family:var(--slate);font-size:.55rem;letter-spacing:.22em;text-transform:uppercase;
+    color:#55555b;margin-top:.6rem;
+  }
+
+  /* caption under mockup */
+  .cap{max-width:34rem;text-align:center;color:#8a8a90;font-size:.9rem;line-height:1.6;font-family:var(--slate)}
+  .cap b{color:var(--bone);font-weight:400}
+  .cap .r{color:var(--blood)}
+
+  @media (prefers-reduced-motion:reduce){ .drip{animation:none} }
+</style>
+
+<div class="cover">
+  <div class="series">
+    You Probably Think This <b>Book</b> Is About You &middot; <b>Song Too</b><br>
+    Volume Three &middot; The Culmination
+  </div>
+
+  <div class="boxes">
+    <div class="box black"><span class="lbl">black</span></div>
+    <div class="box white"><span class="lbl">white</span></div>
+    <div class="box red">
+      <span class="lbl">red</span>
+      <span class="drip d1"></span>
+      <span class="drip d2"></span>
+      <span class="drip d3"></span>
+      <span class="drip d4"></span>
+    </div>
+  </div>
+
+  <div class="title-wrap">
+    <div class="kicker">&hellip;turns out&hellip;</div>
+    <h1>It's About<br><span class="yall">All Y'all</span><span class="bang">!</span></h1>
+    <div class="riddle">Black &amp; White &amp; Red All Over</div>
+    <div class="darkseven">&mdash; Dark Seven &mdash;</div>
+    <div class="author">A Noir in Blood &amp; Ink</div>
+  </div>
+</div>
+
+<p class="cap">The three boxes <b>are</b> the design law: <b>black</b>, <b>white</b>, and the only one that bleeds — <span class="r">red</span>. The riddle <span class="r">read/red all over</span> becomes the logo. The series trained you across three covers to think it's about <b>you</b>. This one turns around: <span class="r">it's about all y'all.</span></p>

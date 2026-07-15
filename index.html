@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shane Brazelton | Noir Literary Author</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --red: #FF0000;
+            --off-white: #E8E8E8;
+            --dim: #888888;
+            --font-display: 'Abril Fatface', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 18px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav .logo {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+        }
+
+        nav ul a {
+            color: var(--dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        nav ul a:hover { color: var(--red); }
+
+        /* ── HERO ── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 40px 80px;
+            border-bottom: 2px solid var(--red);
+            position: relative;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--red);
+        }
+
+        .hero-eyebrow {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 16px;
+        }
+
+        #hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 12vw, 10rem);
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 32px;
+        }
+
+        #hero h1 span {
+            display: block;
+            color: var(--red);
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            max-width: 600px;
+            color: var(--off-white);
+            border-left: 3px solid var(--red);
+            padding-left: 20px;
+            line-height: 1.8;
+        }
+
+        .tagline strong {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* ── ABOUT ── */
+        #about {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .about-image-wrapper {
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+        }
+
+        .about-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            filter: none;
+        }
+
+        .about-content {
+            padding: 80px 40px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 16px;
+        }
+
+        .about-content h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 32px;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--off-white);
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        .about-content p strong {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* ── BOOKS ── */
+        #books {
+            padding: 100px 40px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        #books h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 4rem);
+            text-transform: uppercase;
+            margin-bottom: 60px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2px;
+            background: #1a1a1a;
+        }
+
+        .book-card {
+            background: var(--black);
+            padding: 48px 40px;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .book-card:hover {
+            background: #0a0a0a;
+        }
+
+        .book-card:hover .book-title {
+            color: var(--white);
+        }
+
+        .book-vol {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin-bottom: 12px;
+        }
+
+        .book-status-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border: 1px solid var(--red);
+            color: var(--red);
+            margin-bottom: 20px;
+        }
+
+        .book-status-badge.available {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .book-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            color: var(--off-white);
+            transition: color 0.2s;
+        }
+
+        .book-desc {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--dim);
+            max-width: 500px;
+            margin-bottom: 24px;
+        }
+
+        .book-link {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--white);
+            text-decoration: none;
+            border-bottom: 2px solid var(--red);
+            padding-bottom: 2px;
+            transition: color 0.2s;
+        }
+
+        .book-link:hover { color: var(--red); }
+
+        /* ── SERIES / THREAD ── */
+        #series {
+            padding: 120px 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        #series .section-label {
+            text-align: center;
+        }
+
+        #series h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 4rem);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .closing-paradox {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            font-weight: 700;
+            line-height: 1.6;
+            color: var(--white);
+            margin-bottom: 40px;
+        }
+
+        .closing-paradox .red-line {
+            color: var(--red);
+        }
+
+        #series p.body {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--dim);
+            line-height: 1.8;
+        }
+
+        /* ── CONTACT ── */
+        #contact {
+            padding: 100px 40px;
+            border-top: 2px solid var(--red);
+            text-align: center;
+        }
+
+        #contact .section-label { text-align: center; }
+
+        #contact h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 6vw, 4rem);
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .contact-link {
+            display: inline-block;
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--black);
+            background: var(--white);
+            padding: 18px 48px;
+            border: 3px solid var(--white);
+            transition: all 0.2s;
+        }
+
+        .contact-link:hover {
+            background: var(--black);
+            color: var(--red);
+            border-color: var(--red);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 40px;
+            border-top: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--dim);
+            letter-spacing: 1px;
+        }
+
+        footer a {
+            color: var(--dim);
+            text-decoration: none;
+        }
+
+        footer a:hover { color: var(--red); }
+
+        /* ── DESKTOP ── */
+        @media (min-width: 992px) {
+            #about {
+                grid-template-columns: 1fr 1fr;
+                min-height: 90vh;
+            }
+
+            .about-image-wrapper {
+                max-height: none;
+                height: 100%;
+            }
+
+            .about-content {
+                padding: 120px 80px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav ul { display: none; }
+            nav { padding: 16px 24px; }
+            #hero { padding: 0 24px 60px; }
+            #books, #series, #contact { padding-left: 24px; padding-right: 24px; }
+            .about-content { padding: 60px 24px; }
+            footer { flex-direction: column; gap: 12px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#hero" class="logo">SB</a>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#books">Books</a></li>
+            <li><a href="#series">The Series</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <p class="hero-eyebrow">Noir Literary Author</p>
+        <h1>Shane<span>Brazelton</span></h1>
+        <p class="tagline">
+            It was always about you.<br>
+            <strong>It was never only about you.</strong>
+        </p>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="about-image-wrapper">
+            <img src="shane_noir_portrait.png" alt="Shane Brazelton">
+        </div>
+        <div class="about-content">
+            <p class="section-label">The Author</p>
+            <h2>Dispatch<br>Manager.<br>Builder.</h2>
+            <p>Shane Brazelton is a concrete dispatch manager in North Alabama who built a publishing operation on a Raspberry Pi in a closet. <strong>Nobody asked him to.</strong> He did it anyway.</p>
+            <p>He records his books during the pre-dawn commute — raw, stream-of-consciousness, voice-to-text — and presses them into noir. The machine he co-built does the shaping. The voice is his.</p>
+            <p>Dark but not hopeless. Cynical but anchored. <strong>The Devil does not win here.</strong></p>
+        </div>
+    </section>
+
+    <!-- BOOKS -->
+    <section id="books">
+        <p class="section-label">The Work</p>
+        <h2>The <span style="color:var(--red)">Volumes</span></h2>
+        <div class="books-grid">
+
+            <div class="book-card">
+                <p class="book-vol">Volume One</p>
+                <span class="book-status-badge available">Available Now</span>
+                <h3 class="book-title">You Probably Think This Book Is About You</h3>
+                <p class="book-desc">22 noir vignettes. A detective who becomes the subject of his own case. The one that started everything.</p>
+                <a href="https://www.amazon.com/dp/B0CX1234567" class="book-link">Get the Book →</a>
+            </div>
+
+            <div class="book-card">
+                <p class="book-vol">Volume Two</p>
+                <span class="book-status-badge">Coming Soon</span>
+                <h3 class="book-title">You Probably Think This Song Is About You Too</h3>
+                <p class="book-desc">A noir song cycle. 17 tracks. One second stretched across an entire album. The second side of the same record.</p>
+                <a href="#contact" class="book-link">Get Notified →</a>
+            </div>
+
+            <div class="book-card">
+                <p class="book-vol">Volume Three</p>
+                <span class="book-status-badge">Coming Soon</span>
+                <h3 class="book-title">Dark Seven</h3>
+                <p class="book-desc">Noir graphic novel. Three inks: black, white, and blood. Six cuts down a spine. The wound that became the binding.</p>
+                <a href="#contact" class="book-link">Get Notified →</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SERIES -->
+    <section id="series">
+        <p class="section-label">The Thread</p>
+        <h2>One Series.<br><span style="color:var(--red)">Three Cuts.</span></h2>
+        <p class="closing-paradox">
+            It was always about you.<br>
+            <span class="red-line">It was never only about you.</span>
+        </p>
+        <p class="body">Three volumes. One spine. The book, the record, the graphic novel — each one goes deeper than the last. You find yourself in the pages whether you meant to or not. That's not an accident. That's the whole point.</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <p class="section-label">Make Contact</p>
+        <h2>Step Into<br><span style="color:var(--red)">The Light</span></h2>
+        <a href="mailto:contact@shanebrazelton.com" class="contact-link">Make Contact</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span>© 2026 Shane Brazelton. All rights reserved.</span>
+        <span>Built on a Raspberry Pi in Alabama.</span>
+    </footer>
+
+</body>
+</html>
