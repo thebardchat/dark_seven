@@ -1,507 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shane Brazelton | Noir Literary Author</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --black: #000000;
-            --white: #FFFFFF;
-            --red: #FF0000;
-            --off-white: #E8E8E8;
-            --dim: #888888;
-            --font-display: 'Abril Fatface', serif;
-            --font-body: 'Inter', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DARK SEVEN — It's About All Y'all · A Noir in Blood &amp; Ink</title>
+<meta name="description" content="DARK SEVEN — Volume Three of 'You Probably Think This Book Is About You.' A dark noir blood comic. Black and white, and the only color is blood. The Devil does not win.">
+<meta property="og:title" content="DARK SEVEN — It's About All Y'all">
+<meta property="og:description" content="A noir in blood &amp; ink. Black, white, and the only color is blood. Six cuts to the floor.">
+<meta property="og:type" content="book">
+<style>
+  :root{
+    --ink:#0a0a0b;
+    --ink-2:#050506;
+    --bone:#f3f1ea;
+    --blood:#c8161d;
+    --blood-bright:#ff2a2a;
+    --blood-dark:#7c0d11;
+    --mute:#6a6a70;
+    --mute-2:#8a8a90;
+    --slate:ui-monospace,"SFMono-Regular",Menlo,"Courier New",monospace;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);color:var(--bone);
+    font-family:var(--serif);line-height:1.6;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:var(--slate)}
+  .r{color:var(--blood)}
+  .eyebrow{
+    font-family:var(--slate);font-size:.62rem;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--mute);line-height:2;
+  }
+  section{padding:clamp(3.5rem,9vw,7rem) clamp(1.2rem,6vw,3rem)}
+  .wrap{max-width:60rem;margin:0 auto}
+  h2{
+    font-family:var(--serif);font-style:italic;font-weight:700;
+    font-size:clamp(1.7rem,5vw,2.6rem);line-height:1.05;letter-spacing:-.01em;
+    margin-bottom:.4rem;text-wrap:balance;
+  }
+  .rule{width:44px;height:2px;background:var(--blood);margin:1.3rem 0 2rem}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ── HERO ───────────────────────────────── */
+  .hero{
+    position:relative;height:100svh;min-height:560px;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;overflow:hidden;background:#000;padding:1.2rem;
+  }
+  #cross{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
+  .hero-inner{position:relative;z-index:2;pointer-events:none;mix-blend-mode:screen}
+  .hero .series{
+    font-family:var(--slate);font-size:clamp(.55rem,1.6vw,.66rem);letter-spacing:.26em;
+    text-transform:uppercase;color:#9a9aa1;line-height:2;margin-bottom:1.4rem;
+  }
+  .hero h1{
+    font-family:var(--serif);font-weight:700;font-style:italic;
+    font-size:clamp(2.6rem,12vw,6rem);line-height:.92;letter-spacing:-.02em;
+    color:var(--bone);text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.8);
+  }
+  .hero h1 .yall,.hero h1 .bang{color:var(--blood-bright)}
+  .hero .riddle{
+    font-family:var(--slate);font-size:clamp(.6rem,2vw,.8rem);letter-spacing:.2em;
+    text-transform:uppercase;color:var(--mute-2);margin-top:1.5rem;
+  }
+  .hero .darkseven{
+    font-family:var(--slate);font-size:clamp(.6rem,2vw,.78rem);letter-spacing:.5em;
+    text-transform:uppercase;color:var(--blood);margin-top:1.6rem;padding-left:.5em;
+  }
+  .scrolldown{
+    position:absolute;bottom:2.2rem;left:0;right:0;z-index:2;text-align:center;
+    font-family:var(--slate);font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--mute);animation:pulse 3s ease-in-out infinite;pointer-events:none;
+  }
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.8}}
+  /* vignette so the title always reads over the animation */
+  .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 42%,transparent 30%,rgba(0,0,0,.55) 100%)}
 
-        html { scroll-behavior: smooth; }
+  /* ── PREMISE ────────────────────────────── */
+  .premise{background:var(--ink)}
+  .premise p{font-size:clamp(1.05rem,2.4vw,1.35rem);color:#d8d6cf;margin-bottom:1.2rem;text-wrap:pretty}
+  .premise .lede{font-style:italic;color:var(--bone)}
+  .premise .verdict{
+    font-family:var(--slate);text-transform:uppercase;letter-spacing:.14em;
+    font-size:clamp(.8rem,2vw,1rem);color:var(--blood);margin-top:2rem;
+  }
 
-        body {
-            background: var(--black);
-            color: var(--white);
-            font-family: var(--font-body);
-            font-size: 18px;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+  /* ── DESIGN LAW / three inks ────────────── */
+  .law{background:var(--ink-2);border-top:1px solid #17171b;border-bottom:1px solid #17171b}
+  .boxes{display:flex;gap:clamp(.8rem,3vw,1.6rem);margin:2.5rem 0 3rem;flex-wrap:wrap}
+  .box{flex:1;min-width:150px}
+  .swatch{aspect-ratio:5/3;position:relative;border-radius:2px;overflow:visible;
+    box-shadow:0 20px 40px -24px rgba(0,0,0,.9)}
+  .swatch.black{background:#050506;border:1px solid #24242a}
+  .swatch.white{background:var(--bone)}
+  .swatch.red{background:var(--blood);overflow:hidden}
+  .box h3{font-family:var(--slate);font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
+    margin:1.1rem 0 .5rem;color:var(--bone)}
+  .box p{font-size:.95rem;color:var(--mute-2);line-height:1.55}
+  .box .k{color:var(--bone)}
+  /* dripping blood off the red swatch */
+  .drip{position:absolute;top:100%;background:var(--blood);width:6px;border-radius:0 0 6px 6px;
+    transform-origin:top;animation:ooze 4s ease-in-out infinite}
+  .drip::after{content:"";position:absolute;left:50%;top:100%;width:10px;height:10px;
+    background:var(--blood);border-radius:50%;transform:translate(-50%,-30%)}
+  .drip.d1{left:18%;height:28px;animation-delay:0s}
+  .drip.d2{left:46%;height:46px;width:7px;animation-delay:.7s}
+  .drip.d3{left:74%;height:22px;animation-delay:1.5s}
+  @keyframes ooze{0%,100%{transform:scaleY(.9)}50%{transform:scaleY(1.08)}}
 
-        /* ── NAV ── */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid #1a1a1a;
-        }
+  /* ── WOUND MAP ──────────────────────────── */
+  .map{background:var(--ink)}
+  .cuts{position:relative;margin-top:2.5rem;padding-left:clamp(1.4rem,5vw,2.6rem)}
+  .cuts::before{content:"";position:absolute;left:clamp(.3rem,1.5vw,.7rem);top:.4rem;bottom:.4rem;
+    width:2px;background:linear-gradient(180deg,#2a2a30 0%,var(--blood-dark) 55%,var(--blood) 100%)}
+  .cut{position:relative;padding:0 0 2.1rem}
+  .cut::before{content:"";position:absolute;left:calc(-1 * clamp(1.4rem,5vw,2.6rem) + clamp(.3rem,1.5vw,.7rem) - 4px);
+    top:.5rem;width:11px;height:11px;border-radius:50%;background:var(--ink);
+    border:2px solid var(--blood);box-shadow:0 0 0 4px var(--ink)}
+  .cut .no{font-family:var(--slate);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--blood)}
+  .cut h3{font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(1.15rem,3.4vw,1.6rem);
+    margin:.15rem 0 .35rem;color:var(--bone)}
+  .cut p{font-size:.98rem;color:var(--mute-2);line-height:1.55;max-width:40rem}
+  .cut.flip .no,.cut.floor .no{color:var(--blood-bright)}
+  .cut.flip h3::after{content:" ↻";color:var(--blood-bright)}
+  .cut.bookend::before{background:var(--bone);border-color:var(--bone)}
+  .cut.bookend .no{color:var(--mute)}
+  .cut.floor::before{background:var(--bone);border-color:var(--blood);width:14px;height:14px;left:calc(-1 * clamp(1.4rem,5vw,2.6rem) + clamp(.3rem,1.5vw,.7rem) - 5px)}
+  .cut.floor p{color:#c9c7c0}
 
-        nav .logo {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--white);
-            text-decoration: none;
-        }
+  /* ── CHARACTERS ─────────────────────────── */
+  .cast{background:var(--ink-2);border-top:1px solid #17171b}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:2.5rem}
+  .card{background:var(--ink);border:1px solid #1c1c22;border-radius:4px;padding:1.5rem 1.4rem;
+    transition:border-color .3s,transform .3s}
+  .card:hover{border-color:var(--blood-dark);transform:translateY(-3px)}
+  .card h3{font-family:var(--serif);font-style:italic;font-size:1.25rem;color:var(--bone);margin-bottom:.5rem}
+  .card p{font-size:.92rem;color:var(--mute-2);line-height:1.55}
+  .card.veiled{border-style:dashed;border-color:#2a2a30}
+  .card.veiled h3{color:var(--mute-2)}
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 32px;
-        }
+  /* ── CLOSING ────────────────────────────── */
+  .close{background:var(--ink);text-align:center}
+  .close .trio p{font-family:var(--serif);font-style:italic;color:var(--mute-2);
+    font-size:clamp(1rem,2.6vw,1.3rem);margin:.7rem 0}
+  .close .trio .three{color:var(--bone)}
+  .close .final{font-family:var(--serif);font-style:italic;font-weight:700;
+    font-size:clamp(1.4rem,4.5vw,2.2rem);color:var(--bone);margin:2.5rem auto 0;max-width:34rem;text-wrap:balance}
+  .close .final .r{color:var(--blood)}
+  .actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:3rem}
+  .btn{font-family:var(--slate);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+    text-decoration:none;padding:.9rem 1.5rem;border-radius:3px;transition:all .25s;border:1px solid transparent}
+  .btn.primary{background:var(--blood);color:var(--bone)}
+  .btn.primary:hover{background:var(--blood-bright)}
+  .btn.ghost{border-color:#33333a;color:var(--mute-2)}
+  .btn.ghost:hover{border-color:var(--bone);color:var(--bone)}
 
-        nav ul a {
-            color: var(--dim);
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
+  footer{padding:2.5rem 1.2rem 3rem;text-align:center;border-top:1px solid #17171b;background:var(--ink-2)}
+  footer p{font-family:var(--slate);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--mute);line-height:2}
+  footer .r{color:var(--blood-dark)}
 
-        nav ul a:hover { color: var(--red); }
-
-        /* ── HERO ── */
-        #hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 0 40px 80px;
-            border-bottom: 2px solid var(--red);
-            position: relative;
-        }
-
-        #hero::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
-            background: var(--red);
-        }
-
-        .hero-eyebrow {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--red);
-            margin-bottom: 16px;
-        }
-
-        #hero h1 {
-            font-family: var(--font-display);
-            font-size: clamp(4rem, 12vw, 10rem);
-            line-height: 0.9;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            margin-bottom: 32px;
-        }
-
-        #hero h1 span {
-            display: block;
-            color: var(--red);
-        }
-
-        .tagline {
-            font-size: clamp(1rem, 2.5vw, 1.5rem);
-            font-weight: 300;
-            max-width: 600px;
-            color: var(--off-white);
-            border-left: 3px solid var(--red);
-            padding-left: 20px;
-            line-height: 1.8;
-        }
-
-        .tagline strong {
-            color: var(--white);
-            font-weight: 700;
-        }
-
-        /* ── ABOUT ── */
-        #about {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0;
-        }
-
-        .about-image-wrapper {
-            width: 100%;
-            max-height: 80vh;
-            overflow: hidden;
-        }
-
-        .about-image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            display: block;
-            filter: none;
-        }
-
-        .about-content {
-            padding: 80px 40px;
-        }
-
-        .section-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--red);
-            margin-bottom: 16px;
-        }
-
-        .about-content h2 {
-            font-family: var(--font-display);
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            text-transform: uppercase;
-            line-height: 1;
-            margin-bottom: 32px;
-        }
-
-        .about-content p {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: var(--off-white);
-            margin-bottom: 20px;
-            max-width: 600px;
-        }
-
-        .about-content p strong {
-            color: var(--white);
-            font-weight: 700;
-        }
-
-        /* ── BOOKS ── */
-        #books {
-            padding: 100px 40px;
-            border-top: 1px solid #1a1a1a;
-        }
-
-        #books h2 {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 5vw, 4rem);
-            text-transform: uppercase;
-            margin-bottom: 60px;
-        }
-
-        .books-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2px;
-            background: #1a1a1a;
-        }
-
-        .book-card {
-            background: var(--black);
-            padding: 48px 40px;
-            position: relative;
-            transition: background 0.2s;
-        }
-
-        .book-card:hover {
-            background: #0a0a0a;
-        }
-
-        .book-card:hover .book-title {
-            color: var(--white);
-        }
-
-        .book-vol {
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--dim);
-            margin-bottom: 12px;
-        }
-
-        .book-status-badge {
-            display: inline-block;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            padding: 4px 10px;
-            border: 1px solid var(--red);
-            color: var(--red);
-            margin-bottom: 20px;
-        }
-
-        .book-status-badge.available {
-            border-color: var(--white);
-            color: var(--white);
-        }
-
-        .book-title {
-            font-family: var(--font-display);
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            text-transform: uppercase;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            color: var(--off-white);
-            transition: color 0.2s;
-        }
-
-        .book-desc {
-            font-size: 1rem;
-            font-weight: 300;
-            color: var(--dim);
-            max-width: 500px;
-            margin-bottom: 24px;
-        }
-
-        .book-link {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--white);
-            text-decoration: none;
-            border-bottom: 2px solid var(--red);
-            padding-bottom: 2px;
-            transition: color 0.2s;
-        }
-
-        .book-link:hover { color: var(--red); }
-
-        /* ── SERIES / THREAD ── */
-        #series {
-            padding: 120px 40px;
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-            border-top: 1px solid #1a1a1a;
-        }
-
-        #series .section-label {
-            text-align: center;
-        }
-
-        #series h2 {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 6vw, 4rem);
-            text-transform: uppercase;
-            margin-bottom: 40px;
-        }
-
-        .closing-paradox {
-            font-size: clamp(1.3rem, 3vw, 2rem);
-            font-weight: 700;
-            line-height: 1.6;
-            color: var(--white);
-            margin-bottom: 40px;
-        }
-
-        .closing-paradox .red-line {
-            color: var(--red);
-        }
-
-        #series p.body {
-            font-size: 1.1rem;
-            font-weight: 300;
-            color: var(--dim);
-            line-height: 1.8;
-        }
-
-        /* ── CONTACT ── */
-        #contact {
-            padding: 100px 40px;
-            border-top: 2px solid var(--red);
-            text-align: center;
-        }
-
-        #contact .section-label { text-align: center; }
-
-        #contact h2 {
-            font-family: var(--font-display);
-            font-size: clamp(2rem, 6vw, 4rem);
-            text-transform: uppercase;
-            margin-bottom: 40px;
-        }
-
-        .contact-link {
-            display: inline-block;
-            font-family: var(--font-display);
-            font-size: 1.3rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: var(--black);
-            background: var(--white);
-            padding: 18px 48px;
-            border: 3px solid var(--white);
-            transition: all 0.2s;
-        }
-
-        .contact-link:hover {
-            background: var(--black);
-            color: var(--red);
-            border-color: var(--red);
-        }
-
-        /* ── FOOTER ── */
-        footer {
-            padding: 40px;
-            border-top: 1px solid #1a1a1a;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.75rem;
-            color: var(--dim);
-            letter-spacing: 1px;
-        }
-
-        footer a {
-            color: var(--dim);
-            text-decoration: none;
-        }
-
-        footer a:hover { color: var(--red); }
-
-        /* ── DESKTOP ── */
-        @media (min-width: 992px) {
-            #about {
-                grid-template-columns: 1fr 1fr;
-                min-height: 90vh;
-            }
-
-            .about-image-wrapper {
-                max-height: none;
-                height: 100%;
-            }
-
-            .about-content {
-                padding: 120px 80px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-            }
-
-            .books-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            nav ul { display: none; }
-            nav { padding: 16px 24px; }
-            #hero { padding: 0 24px 60px; }
-            #books, #series, #contact { padding-left: 24px; padding-right: 24px; }
-            .about-content { padding: 60px 24px; }
-            footer { flex-direction: column; gap: 12px; text-align: center; }
-        }
-    </style>
+  @media (prefers-reduced-motion:reduce){.drip,.scrolldown{animation:none}}
+</style>
 </head>
 <body>
 
-    <!-- NAV -->
-    <nav>
-        <a href="#hero" class="logo">SB</a>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#books">Books</a></li>
-            <li><a href="#series">The Series</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <canvas id="cross"></canvas>
+  <div class="hero-inner">
+    <div class="series">
+      You Probably Think This Book Is About You<br>
+      Volume Three &middot; The Culmination
+    </div>
+    <h1>It's About<br><span class="yall">All Y'all</span><span class="bang">!</span></h1>
+    <div class="riddle">Black &amp; White &amp; Red All Over</div>
+    <div class="darkseven">Dark Seven</div>
+  </div>
+  <div class="scrolldown">scroll &darr;</div>
+</header>
 
-    <!-- HERO -->
-    <section id="hero">
-        <p class="hero-eyebrow">Noir Literary Author</p>
-        <h1>Shane<span>Brazelton</span></h1>
-        <p class="tagline">
-            It was always about you.<br>
-            <strong>It was never only about you.</strong>
-        </p>
-    </section>
+<!-- ══ PREMISE ══ -->
+<section class="premise">
+  <div class="wrap">
+    <p class="eyebrow">What this is</p>
+    <div class="rule"></div>
+    <p class="lede">Volume One watched the world. Volume Two listened to it. Volume Three <span class="r">bleeds.</span></p>
+    <p>A dark noir blood comic. Black and white, and the only color is blood. Six cuts on a nameless detective, each deeper than the last, each one a door into an older wound — all of them hung off the one scar down his spine, which is the binding of the book itself.</p>
+    <p>Two things happen at once, neither named on the surface: a case that's really about the thing that came for his son, and a highway thirty years gone that never stopped bleeding.</p>
+    <p class="verdict">The Devil does not win.</p>
+  </div>
+</section>
 
-    <!-- ABOUT -->
-    <section id="about">
-        <div class="about-image-wrapper">
-            <img src="shane_noir_portrait.png" alt="Shane Brazelton">
+<!-- ══ DESIGN LAW ══ -->
+<section class="law">
+  <div class="wrap">
+    <p class="eyebrow">The design law</p>
+    <h2>Three inks, no fourth.</h2>
+    <div class="rule"></div>
+    <div class="boxes">
+      <div class="box">
+        <div class="swatch black"></div>
+        <h3>Black</h3>
+        <p>The world, and the dark. <span class="k">The default state of everything.</span></p>
+      </div>
+      <div class="box">
+        <div class="swatch white"></div>
+        <h3>White</h3>
+        <p>Grace — the shield, the Light, rescue. <span class="k">Reserved and rare. Earn it.</span></p>
+      </div>
+      <div class="box">
+        <div class="swatch red">
+          <span class="drip d1"></span><span class="drip d2"></span><span class="drip d3"></span>
         </div>
-        <div class="about-content">
-            <p class="section-label">The Author</p>
-            <h2>Dispatch<br>Manager.<br>Builder.</h2>
-            <p>Shane Brazelton is a concrete dispatch manager in North Alabama who built a publishing operation on a Raspberry Pi in a closet. <strong>Nobody asked him to.</strong> He did it anyway.</p>
-            <p>He records his books during the pre-dawn commute — raw, stream-of-consciousness, voice-to-text — and presses them into noir. The machine he co-built does the shaping. The voice is his.</p>
-            <p>Dark but not hopeless. Cynical but anchored. <strong>The Devil does not win here.</strong></p>
-        </div>
-    </section>
+        <h3 class="r">Red</h3>
+        <p>Blood, and blood only. <span class="k">If it's red, it's bleeding. Nothing else is ever red.</span></p>
+      </div>
+    </div>
+    <p class="mono" style="color:var(--mute-2);font-size:.9rem;letter-spacing:.04em">
+      The one sanctioned extension: the <span class="r">red neon Celtic cross</span> — grace <em>and</em> blood at once,
+      burning in the dark. It is red because it is bought with blood.
+    </p>
+  </div>
+</section>
 
-    <!-- BOOKS -->
-    <section id="books">
-        <p class="section-label">The Work</p>
-        <h2>The <span style="color:var(--red)">Volumes</span></h2>
-        <div class="books-grid">
+<!-- ══ WOUND MAP ══ -->
+<section class="map">
+  <div class="wrap">
+    <p class="eyebrow">The structure &middot; the table of contents is a wound map</p>
+    <h2>Six cuts to the floor.</h2>
+    <div class="rule"></div>
+    <div class="cuts">
+      <div class="cut bookend">
+        <div class="no">The First Witness</div>
+        <h3>The old soldier watches it first</h3>
+        <p>The opening frame. He sees it before anyone, and lets it go last.</p>
+      </div>
+      <div class="cut">
+        <div class="no">Cut 1</div>
+        <h3>The Arm</h3>
+        <p>First blood; the ambush snaps shut. Teaches the reader to brace.</p>
+      </div>
+      <div class="cut">
+        <div class="no">Cut 2</div>
+        <h3>Down the Spine</h3>
+        <p>The box-cutter line — the book's own binding. The veil goes up: nothing named, everything felt.</p>
+      </div>
+      <div class="cut">
+        <div class="no">Cut 3</div>
+        <h3>The Shoulder Blade</h3>
+        <p>The warm cut that isn't a scratch. Deeper into the boy.</p>
+      </div>
+      <div class="cut flip">
+        <div class="no">Cut 4 &middot; the flip</div>
+        <h3>The Scalp</h3>
+        <p>The deepest dive. The book prints inverted — you rotate it in your hands to reach the bottom of the fall.</p>
+      </div>
+      <div class="cut">
+        <div class="no">Cut 5 &middot; white enters</div>
+        <h3>The Neck / The Shield</h3>
+        <p>The kill shot that doesn't land. The turn: victim becomes protector. <em>Tried to take my son. I lifted my shield.</em></p>
+      </div>
+      <div class="cut">
+        <div class="no">Cut 6</div>
+        <h3>The Knife That Stays</h3>
+        <p>Stabbed, bleeding out. The floor drops all the way — the origin told straight.</p>
+      </div>
+      <div class="cut floor">
+        <div class="no">The Floor &middot; '96</div>
+        <h3>The origin, blown white</h3>
+        <p>The highway. The errand. The horns that never stop. Told in blinding overexposed daylight — blood still the only color.</p>
+      </div>
+      <div class="cut bookend">
+        <div class="no">The Last Witness</div>
+        <h3>The old soldier lets it go</h3>
+        <p>The closing bookend. No red left.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <div class="book-card">
-                <p class="book-vol">Volume One</p>
-                <span class="book-status-badge available">Available Now</span>
-                <h3 class="book-title">You Probably Think This Book Is About You</h3>
-                <p class="book-desc">22 noir vignettes. A detective who becomes the subject of his own case. The one that started everything.</p>
-                <a href="https://www.amazon.com/dp/B0CX1234567" class="book-link">Get the Book →</a>
-            </div>
+<!-- ══ CAST ══ -->
+<section class="cast">
+  <div class="wrap">
+    <p class="eyebrow">Who's in it</p>
+    <h2>No names, still.</h2>
+    <div class="rule"></div>
+    <div class="grid">
+      <div class="card">
+        <h3>The Man</h3>
+        <p>The nameless detective. Takes the six cuts. Was the boy on the highway. Becomes the shield.</p>
+      </div>
+      <div class="card">
+        <h3>Tapioca</h3>
+        <p>The friend who came over the roof of the car in '96 — the origin of the only theology the book trusts: the finish doesn't have to land.</p>
+      </div>
+      <div class="card">
+        <h3>Arc &amp; Weld</h3>
+        <p>The detective's "crew," who are really fragments of his own mind. Arc keeps the gate; Weld is the hands. He thinks he runs a crew — he's alone in a room with himself, until every piece turns the same way and becomes a shield.</p>
+      </div>
+      <div class="card veiled">
+        <h3>Keystone</h3>
+        <p>The boy. Veiled — never named, never face-front, his ordeal never shown, only felt. The crown-stone the Architect tried to pull. It held.</p>
+      </div>
+      <div class="card veiled">
+        <h3>The Fractured Architect</h3>
+        <p>The thing that came for Keystone. A hand and a warm light. Never a face. Never a body.</p>
+      </div>
+      <div class="card">
+        <h3>The Witness</h3>
+        <p>The old soldier in the recliner who watches it first and lets it go last. The frame around the fall.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <div class="book-card">
-                <p class="book-vol">Volume Two</p>
-                <span class="book-status-badge">Coming Soon</span>
-                <h3 class="book-title">You Probably Think This Song Is About You Too</h3>
-                <p class="book-desc">A noir song cycle. 17 tracks. One second stretched across an entire album. The second side of the same record.</p>
-                <a href="#contact" class="book-link">Get Notified →</a>
-            </div>
+<!-- ══ CLOSING ══ -->
+<section class="close">
+  <div class="wrap">
+    <p class="eyebrow">The closing line</p>
+    <div class="rule" style="margin-left:auto;margin-right:auto"></div>
+    <div class="trio">
+      <p>Volume One: <em>"You just needed someone to drive you there."</em></p>
+      <p>Volume Two: <em>"He is everyone and no one at the same time."</em></p>
+      <p class="three">Volume Three:</p>
+    </div>
+    <p class="final">"It was always about you. It was never only about you. Tried to take my son. I lifted my shield. <span class="r">The Devil does not win.</span>"</p>
+    <div class="actions">
+      <a class="btn primary" href="dark-seven-teaser-cross-loop.html">▶ Watch the teaser</a>
+      <a class="btn ghost" href="https://www.amazon.com/Probably-Think-This-Book-About/dp/B0GT25R5FD">Book One on Amazon</a>
+      <a class="btn ghost" href="author.html">About the author</a>
+    </div>
+  </div>
+</section>
 
-            <div class="book-card">
-                <p class="book-vol">Volume Three</p>
-                <span class="book-status-badge">Coming Soon</span>
-                <h3 class="book-title">Dark Seven</h3>
-                <p class="book-desc">Noir graphic novel. Three inks: black, white, and blood. Six cuts down a spine. The wound that became the binding.</p>
-                <a href="#contact" class="book-link">Get Notified →</a>
-            </div>
+<footer>
+  <p>Written by <span style="color:var(--bone)">Shane Brazelton</span> &middot; Co-built with Claude<br>
+  Black &amp; White &amp; <span class="r">Red</span> All Over &middot; The Devil does not win</p>
+</footer>
 
-        </div>
-    </section>
+<!-- ══ HERO ANIMATION — the Celtic cross loop (ignite → hold → flood → drain → void) ══ -->
+<script>
+(() => {
+  const cv=document.getElementById('cross'); if(!cv) return;
+  const ctx=cv.getContext('2d',{alpha:false});
+  const cross=document.createElement('canvas'), xctx=cross.getContext('2d');
+  const bloom=document.createElement('canvas'), lctx=bloom.getContext('2d');
+  const host=cv.parentElement;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const BONE='#e8e8e6';
+  let W,H,DPR,S,cx,cyY,pw,aT,aB,aL,aR,R1,R2,rm,boxL,boxW,boxT,ext;
 
-    <!-- SERIES -->
-    <section id="series">
-        <p class="section-label">The Thread</p>
-        <h2>One Series.<br><span style="color:var(--red)">Three Cuts.</span></h2>
-        <p class="closing-paradox">
-            It was always about you.<br>
-            <span class="red-line">It was never only about you.</span>
-        </p>
-        <p class="body">Three volumes. One spine. The book, the record, the graphic novel — each one goes deeper than the last. You find yourself in the pages whether you meant to or not. That's not an accident. That's the whole point.</p>
-    </section>
+  function rr(g,x,y,w,h,r){ r=Math.min(r,w/2,h/2); g.beginPath();
+    g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
 
-    <!-- CONTACT -->
-    <section id="contact">
-        <p class="section-label">Make Contact</p>
-        <h2>Step Into<br><span style="color:var(--red)">The Light</span></h2>
-        <a href="mailto:contact@shanebrazelton.com" class="contact-link">Make Contact</a>
-    </section>
+  function build(){
+    DPR=Math.min(devicePixelRatio||1,2); W=host.clientWidth; H=host.clientHeight;
+    for(const c of [cv,cross,bloom]){ c.width=Math.floor(W*DPR); c.height=Math.floor(H*DPR); }
+    ctx.setTransform(DPR,0,0,DPR,0,0); xctx.setTransform(DPR,0,0,DPR,0,0); lctx.setTransform(DPR,0,0,DPR,0,0);
+    S=Math.min(W,H)*1.02; cx=W/2; cyY=H*0.44; pw=S*0.115;
+    aT=cyY-S*0.28; aB=cyY+S*0.46; aL=cx-S*0.26; aR=cx+S*0.26;
+    R2=S*0.225; R1=S*0.188; rm=S*0.105;
+    boxL=cx-(S*0.26+S*0.05); boxW=2*(S*0.26+S*0.05); boxT=aT-S*0.05; ext=H+S*0.06;
+    drawCrossArt();
+  }
 
-    <!-- FOOTER -->
-    <footer>
-        <span>© 2026 Shane Brazelton. All rights reserved.</span>
-        <span>Built on a Raspberry Pi in Alabama.</span>
-    </footer>
+  function weave(g,x,y,w,h){ const s=S*0.028, bw=s*0.46;
+    g.save(); rr(g,x,y,w,h,Math.min(w,h)*0.18); g.clip(); g.fillStyle='#000'; g.fillRect(x-2,y-2,w+4,h+4); g.lineCap='round';
+    const fam=(dir)=>{ for(let o=-h;o<w+s;o+=s){ const sx=x+o,sy=(dir>0)?y:y+h,ex=x+o+(w+h),ey=(dir>0)?y+(w+h):y+h-(w+h);
+      g.strokeStyle='#000'; g.lineWidth=bw+3; g.beginPath(); g.moveTo(sx,sy); g.lineTo(ex,ey); g.stroke();
+      g.strokeStyle=BONE; g.lineWidth=bw; g.beginPath(); g.moveTo(sx,sy); g.lineTo(ex,ey); g.stroke(); }};
+    fam(1); fam(-1); g.restore(); }
+  function bar(g,x,y,w,h){ const bd=Math.min(w,h)*0.16, r=Math.min(w,h)*0.32;
+    rr(g,x,y,w,h,r); g.fillStyle=BONE; g.fill();
+    rr(g,x+bd,y+bd,w-2*bd,h-2*bd,r*0.7); g.fillStyle='#000'; g.fill();
+    g.lineWidth=Math.max(1.4,S*0.004); g.strokeStyle=BONE; rr(g,x+bd*1.7,y+bd*1.7,w-3.4*bd,h-3.4*bd,r*0.55); g.stroke();
+    weave(g,x+bd*2.1,y+bd*2.1,w-4.2*bd,h-4.2*bd); }
+  function medallion(g){ g.beginPath(); g.arc(cx,cyY,rm,0,7); g.fillStyle=BONE; g.fill();
+    g.beginPath(); g.arc(cx,cyY,rm*0.86,0,7); g.fillStyle='#000'; g.fill();
+    g.lineWidth=Math.max(1.4,S*0.004); g.strokeStyle=BONE; g.beginPath(); g.arc(cx,cyY,rm*0.80,0,7); g.stroke();
+    g.lineWidth=Math.max(2,S*0.006);
+    for(let k=0;k<4;k++){ const a=k*Math.PI/2; g.save(); g.translate(cx,cyY); g.rotate(a); g.beginPath(); g.ellipse(0,-rm*0.42,rm*0.26,rm*0.5,0,0,7); g.stroke(); g.restore(); }
+    g.beginPath(); g.arc(cx,cyY,rm*0.22,0,7); g.stroke(); g.beginPath(); g.arc(cx,cyY,rm*0.08,0,7); g.fillStyle=BONE; g.fill(); }
+  function ringBand(g){ g.lineCap='butt';
+    for(const r of [R2,R1]){ g.strokeStyle='#000'; g.lineWidth=S*0.026; g.beginPath(); g.arc(cx,cyY,r,0,7); g.stroke(); }
+    for(const r of [R2,R1]){ g.strokeStyle=BONE; g.lineWidth=S*0.018; g.beginPath(); g.arc(cx,cyY,r,0,7); g.stroke(); } }
+  function drawCrossArt(){
+    xctx.clearRect(0,0,W,H); ringBand(xctx);
+    bar(xctx, cx-pw/2, aT, pw, aB-aT); bar(xctx, aL, cyY-pw/2, aR-aL, pw); medallion(xctx);
+    lctx.clearRect(0,0,W,H);
+    lctx.save(); try{ lctx.filter='blur('+(S*0.012*DPR)+'px)'; }catch(e){} lctx.drawImage(cross,0,0,W,H); lctx.restore();
+  }
 
+  const rivs=[];
+  function pour(x,y){ rivs.push({x,y,v:0.6+Math.random()*0.9,w:4+Math.random()*5,a:1,life:1}); }
+  function seg(g,x0,y0,x1,y1,w,a){ g.lineCap='round';
+    g.strokeStyle='rgba(110,0,0,'+(0.95*a)+')'; g.lineWidth=w; g.beginPath(); g.moveTo(x0,y0); g.lineTo(x1,y1); g.stroke();
+    g.strokeStyle='rgba(200,0,0,'+(0.9*a)+')'; g.lineWidth=Math.max(1,w*0.55); g.beginPath(); g.moveTo(x0,y0); g.lineTo(x1,y1); g.stroke();
+    g.strokeStyle='rgba(255,130,130,'+(0.35*a)+')'; g.lineWidth=Math.max(0.7,w*0.22); g.beginPath(); g.moveTo(x0-w*0.16,y0); g.lineTo(x1-w*0.16,y1); g.stroke(); }
+  function bead(g,x,y,r,a){ const gr=g.createRadialGradient(x-r*0.35,y-r*0.4,r*0.1,x,y,r);
+    gr.addColorStop(0,'rgba(255,150,150,'+a+')'); gr.addColorStop(0.35,'rgba(220,0,0,'+a+')'); gr.addColorStop(1,'rgba(110,0,0,'+a+')');
+    g.fillStyle=gr; g.beginPath(); g.arc(x,y,r,0,7); g.fill(); }
+
+  const zaps=[];
+  function ln(x1,y1,x2,y2,d,dep,p){ if(dep<=0){p.push([x2,y2]);return;} const mx=(x1+x2)/2+(Math.random()-0.5)*d,my=(y1+y2)/2+(Math.random()-0.5)*d; ln(x1,y1,mx,my,d/2,dep-1,p); ln(mx,my,x2,y2,d/2,dep-1,p); }
+  function fireZap(){ const x1=cx+(Math.random()-0.5)*S*0.5,y1=aT+Math.random()*S*0.2, x2=cx+(Math.random()-0.5)*S*0.5,y2=cyY+ (Math.random()-0.3)*S*0.5;
+    const p=[[x1,y1]]; ln(x1,y1,x2,y2,S*0.22,5,p); zaps.push({p,born:performance.now()}); }
+
+  const PH=[['ignite',2600],['lit',1800],['flood',3000],['drain',2500],['void',900]];
+  let pi=0, pt=0, last=performance.now(), V=0, G=0, nextFlick=0;
+  function enter(i){ pi=i; pt=0; if(PH[i][0]==='ignite'){ V=0; nextFlick=performance.now()+120; } if(PH[i][0]==='flood'){ rivs.length=0; fireZap(); } }
+
+  function frame(now){
+    const dt=Math.min(50,now-last); last=now; pt+=dt;
+    const name=PH[pi][0], dur=PH[pi][1], tf=pt/dur;
+    let floodF=0, drainD=0;
+
+    if(name==='ignite'){
+      if(tf<0.6){ V*=0.55; if(now>nextFlick){ V=0.35+Math.random()*0.6; if(Math.random()<0.6) fireZap(); nextFlick=now+(110+Math.random()*400*(1-tf)); } }
+      else { V+=(1-V)*0.18; }
+      G=V;
+    } else if(name==='lit'){ V+=(1-V)*0.3; if(Math.random()<0.03){ V=0.7; } G=1; }
+    else if(name==='flood'){ V=1; floodF=tf; G=1-floodF;
+      if(Math.random()<0.5){ const x=boxL+Math.random()*boxW; pour(x, boxT); } if(tf<0.12 && Math.random()<0.15) fireZap(); }
+    else if(name==='drain'){ V=0; drainD=tf; G=0;
+      const Yd=boxT+drainD*(ext-boxT); if(Math.random()<0.6){ pour(boxL+Math.random()*boxW, Yd); } }
+    else { V=0; G=0; }
+
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+
+    if(name==='ignite'||name==='lit'||name==='flood'){
+      if(G>0){ const rg=ctx.createRadialGradient(cx,cyY,S*0.05,cx,cyY,S*0.55);
+        rg.addColorStop(0,'rgba(255,255,255,'+(0.26*G)+')'); rg.addColorStop(0.5,'rgba(255,120,120,'+(0.09*G)+')'); rg.addColorStop(1,'rgba(0,0,0,0)');
+        ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
+        ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=0.5*G; ctx.drawImage(bloom,0,0,W,H); ctx.restore(); }
+      ctx.globalAlpha=0.12+0.88*Math.max(0,Math.min(1,V)); ctx.drawImage(cross,0,0,W,H); ctx.globalAlpha=1;
+    }
+
+    if(name==='flood'){
+      const Yf=boxT+floodF*(ext-boxT);
+      const grd=ctx.createLinearGradient(0,boxT,0,Yf);
+      grd.addColorStop(0,'#7a0000'); grd.addColorStop(0.7,'#b00000'); grd.addColorStop(1,'#d80000');
+      ctx.fillStyle=grd; ctx.fillRect(boxL,boxT,boxW,Yf-boxT);
+      const band=ctx.createLinearGradient(0,Yf-S*0.02,0,Yf+S*0.03); band.addColorStop(0,'rgba(255,80,80,0.6)'); band.addColorStop(1,'rgba(216,0,0,0)');
+      ctx.fillStyle=band; ctx.fillRect(boxL,Yf-S*0.02,boxW,S*0.05);
+    } else if(name==='drain'){
+      const Yd=boxT+drainD*(ext-boxT);
+      const grd=ctx.createLinearGradient(0,Yd,0,H); grd.addColorStop(0,'#c00000'); grd.addColorStop(1,'#7a0000');
+      ctx.fillStyle=grd; ctx.fillRect(boxL,Yd,boxW,H-Yd+4);
+      const band=ctx.createLinearGradient(0,Yd-S*0.01,0,Yd+S*0.04); band.addColorStop(0,'rgba(255,90,90,0.5)'); band.addColorStop(1,'rgba(192,0,0,0)');
+      ctx.fillStyle=band; ctx.fillRect(boxL,Yd-S*0.01,boxW,S*0.05);
+    }
+
+    for(let k=rivs.length-1;k>=0;k--){ const d=rivs[k]; d.v+=0.03; const ny=d.y+d.v*(dt/16);
+      seg(ctx,d.x,d.y,d.x,ny,d.w,d.a); bead(ctx,d.x,ny,d.w*0.7,d.a); d.y=ny;
+      if(name==='flood'){ d.life-=dt*0.0009; d.a=Math.max(0,d.life); }
+      if(d.y>H+20||d.a<=0) rivs.splice(k,1); }
+
+    ctx.lineCap='round';
+    for(let k=zaps.length-1;k>=0;k--){ const z=zaps[k], age=now-z.born, life=1-age/200; if(life<=0){zaps.splice(k,1);continue;}
+      const fl=life*(0.6+0.4*Math.sin(age*0.9));
+      ctx.beginPath(); ctx.moveTo(z.p[0][0],z.p[0][1]); for(let i=1;i<z.p.length;i++) ctx.lineTo(z.p[i][0],z.p[i][1]);
+      ctx.shadowBlur=22; ctx.shadowColor='#ff1414'; ctx.strokeStyle='rgba(255,60,60,'+(0.5*fl)+')'; ctx.lineWidth=5; ctx.stroke();
+      ctx.shadowBlur=0; ctx.strokeStyle='rgba(255,255,255,'+(0.95*fl)+')'; ctx.lineWidth=1.6; ctx.stroke(); }
+
+    if(pt>=dur) enter((pi+1)%PH.length);
+    requestAnimationFrame(frame);
+  }
+
+  // reduced-motion: draw a single steady lit cross, no loop
+  function staticCross(){
+    build();
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+    ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=0.5; ctx.drawImage(bloom,0,0,W,H); ctx.restore();
+    ctx.drawImage(cross,0,0,W,H);
+  }
+
+  let ro;
+  addEventListener('resize', ()=>{ clearTimeout(ro); ro=setTimeout(()=>{ reduce?staticCross():build(); },150); });
+  if(reduce){ staticCross(); }
+  else { build(); enter(0); requestAnimationFrame(frame); }
+})();
+</script>
 </body>
 </html>
