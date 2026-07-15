@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DARK SEVEN — It's About All Y'all · A Noir in Blood &amp; Ink</title>
 <meta name="description" content="DARK SEVEN — Volume Three of 'You Probably Think This Book Is About You.' A dark noir blood comic. Black and white, and the only color is blood. The Devil does not win.">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="alternate icon" href="favicon.ico">
 <meta name="theme-color" content="#0a0a0b">
@@ -16,7 +15,7 @@
 <meta property="og:image" content="https://thebardchat.github.io/dark_seven/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="DARK SEVEN — a noir portrait of the author in a white suit emerging from black, with the title in blood red.">
+<meta property="og:image:alt" content="DARK SEVEN — a trench-coated detective seen from behind, his wounds glowing red down his spine like a cross, his shadow thrown on the wall.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DARK SEVEN — It's About All Y'all">
 <meta name="twitter:description" content="A noir in blood &amp; ink. Black, white, and the only color is blood.">
@@ -62,21 +61,8 @@
     display:flex;flex-direction:column;justify-content:center;align-items:center;
     text-align:center;overflow:hidden;background:#000;padding:1.2rem;
   }
-  #cross{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0}
-  .hero-stage{
-    position:relative;z-index:2;width:100%;max-width:66rem;
-    display:flex;align-items:center;justify-content:center;
-    gap:clamp(1.6rem,5vw,4.5rem);flex-wrap:wrap;
-  }
-  .cover-art{flex:0 0 auto;margin:0;animation:float 7s ease-in-out infinite}
-  .cover-art img{
-    display:block;width:min(300px,68vw);height:auto;max-height:74svh;
-    border:1px solid #2a2a2e;border-radius:3px;
-    box-shadow:0 34px 70px -22px rgba(0,0,0,.95), 0 0 66px -14px rgba(200,22,29,.4);
-  }
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-  .hero-inner{position:relative;z-index:2;pointer-events:none;mix-blend-mode:screen;text-align:left}
-  @media (max-width:760px){ .hero-inner{text-align:center} }
+  .hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;background:#000}
+  .hero-inner{position:relative;z-index:2;pointer-events:none;text-align:center}
   .hero .series{
     font-family:var(--slate);font-size:clamp(.55rem,1.6vw,.66rem);letter-spacing:.26em;
     text-transform:uppercase;color:#9a9aa1;line-height:2;margin-bottom:1.4rem;
@@ -103,7 +89,9 @@
   @keyframes pulse{0%,100%{opacity:.35}50%{opacity:.8}}
   /* vignette so the title always reads over the animation */
   .hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:radial-gradient(ellipse at 50% 42%,transparent 30%,rgba(0,0,0,.55) 100%)}
+    background:
+      radial-gradient(ellipse at 50% 45%,rgba(0,0,0,.28) 0%,rgba(0,0,0,.66) 100%),
+      linear-gradient(180deg,rgba(0,0,0,.45) 0%,transparent 22%,transparent 62%,rgba(10,10,11,.92) 100%)}
 
   /* ── PREMISE ────────────────────────────── */
   .premise{background:var(--ink)}
@@ -189,27 +177,25 @@
     color:var(--mute);line-height:2}
   footer .r{color:var(--blood-dark)}
 
-  @media (prefers-reduced-motion:reduce){.drip,.scrolldown,.cover-art{animation:none}}
+  @media (prefers-reduced-motion:reduce){.drip,.scrolldown{animation:none} .hero-video{display:none}}
 </style>
 </head>
 <body>
 
 <!-- ══ HERO ══ -->
 <header class="hero">
-  <canvas id="cross"></canvas>
-  <div class="hero-stage">
-    <figure class="cover-art">
-      <img src="art/DARK-SEVEN-cover.png" alt="DARK SEVEN: Dark Corridors — the cover. A weathered man in a pale suit emerges from black; the title in blood red." width="600" height="838">
-    </figure>
-    <div class="hero-inner">
-      <div class="series">
-        You Probably Think This Book Is About You<br>
-        Volume Three &middot; The Culmination
-      </div>
-      <h1>It's About<br><span class="yall">All Y'all</span><span class="bang">!</span></h1>
-      <div class="riddle">Black &amp; White &amp; Red All Over</div>
-      <div class="darkseven">Dark Seven</div>
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata"
+         poster="hero-poster.jpg" aria-hidden="true">
+    <source src="art/THE_CHARACTERS_DO_NOT_NARRATE_.mp4" type="video/mp4">
+  </video>
+  <div class="hero-inner">
+    <div class="series">
+      You Probably Think This Book Is About You<br>
+      Volume Three &middot; The Culmination
     </div>
+    <h1>It's About<br><span class="yall">All Y'all</span><span class="bang">!</span></h1>
+    <div class="riddle">Black &amp; White &amp; Red All Over</div>
+    <div class="darkseven">Dark Seven</div>
   </div>
   <div class="scrolldown">scroll &darr;</div>
 </header>
@@ -373,148 +359,5 @@
   Black &amp; White &amp; <span class="r">Red</span> All Over &middot; The Devil does not win</p>
 </footer>
 
-<!-- ══ HERO ANIMATION — the Celtic cross loop (ignite → hold → flood → drain → void) ══ -->
-<script>
-(() => {
-  const cv=document.getElementById('cross'); if(!cv) return;
-  const ctx=cv.getContext('2d',{alpha:false});
-  const cross=document.createElement('canvas'), xctx=cross.getContext('2d');
-  const bloom=document.createElement('canvas'), lctx=bloom.getContext('2d');
-  const host=cv.parentElement;
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const BONE='#e8e8e6';
-  let W,H,DPR,S,cx,cyY,pw,aT,aB,aL,aR,R1,R2,rm,boxL,boxW,boxT,ext;
-
-  function rr(g,x,y,w,h,r){ r=Math.min(r,w/2,h/2); g.beginPath();
-    g.moveTo(x+r,y); g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r); g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath(); }
-
-  function build(){
-    DPR=Math.min(devicePixelRatio||1,2); W=host.clientWidth; H=host.clientHeight;
-    for(const c of [cv,cross,bloom]){ c.width=Math.floor(W*DPR); c.height=Math.floor(H*DPR); }
-    ctx.setTransform(DPR,0,0,DPR,0,0); xctx.setTransform(DPR,0,0,DPR,0,0); lctx.setTransform(DPR,0,0,DPR,0,0);
-    S=Math.min(W,H)*1.02; cx=W/2; cyY=H*0.44; pw=S*0.115;
-    aT=cyY-S*0.28; aB=cyY+S*0.46; aL=cx-S*0.26; aR=cx+S*0.26;
-    R2=S*0.225; R1=S*0.188; rm=S*0.105;
-    boxL=cx-(S*0.26+S*0.05); boxW=2*(S*0.26+S*0.05); boxT=aT-S*0.05; ext=H+S*0.06;
-    drawCrossArt();
-  }
-
-  function weave(g,x,y,w,h){ const s=S*0.028, bw=s*0.46;
-    g.save(); rr(g,x,y,w,h,Math.min(w,h)*0.18); g.clip(); g.fillStyle='#000'; g.fillRect(x-2,y-2,w+4,h+4); g.lineCap='round';
-    const fam=(dir)=>{ for(let o=-h;o<w+s;o+=s){ const sx=x+o,sy=(dir>0)?y:y+h,ex=x+o+(w+h),ey=(dir>0)?y+(w+h):y+h-(w+h);
-      g.strokeStyle='#000'; g.lineWidth=bw+3; g.beginPath(); g.moveTo(sx,sy); g.lineTo(ex,ey); g.stroke();
-      g.strokeStyle=BONE; g.lineWidth=bw; g.beginPath(); g.moveTo(sx,sy); g.lineTo(ex,ey); g.stroke(); }};
-    fam(1); fam(-1); g.restore(); }
-  function bar(g,x,y,w,h){ const bd=Math.min(w,h)*0.16, r=Math.min(w,h)*0.32;
-    rr(g,x,y,w,h,r); g.fillStyle=BONE; g.fill();
-    rr(g,x+bd,y+bd,w-2*bd,h-2*bd,r*0.7); g.fillStyle='#000'; g.fill();
-    g.lineWidth=Math.max(1.4,S*0.004); g.strokeStyle=BONE; rr(g,x+bd*1.7,y+bd*1.7,w-3.4*bd,h-3.4*bd,r*0.55); g.stroke();
-    weave(g,x+bd*2.1,y+bd*2.1,w-4.2*bd,h-4.2*bd); }
-  function medallion(g){ g.beginPath(); g.arc(cx,cyY,rm,0,7); g.fillStyle=BONE; g.fill();
-    g.beginPath(); g.arc(cx,cyY,rm*0.86,0,7); g.fillStyle='#000'; g.fill();
-    g.lineWidth=Math.max(1.4,S*0.004); g.strokeStyle=BONE; g.beginPath(); g.arc(cx,cyY,rm*0.80,0,7); g.stroke();
-    g.lineWidth=Math.max(2,S*0.006);
-    for(let k=0;k<4;k++){ const a=k*Math.PI/2; g.save(); g.translate(cx,cyY); g.rotate(a); g.beginPath(); g.ellipse(0,-rm*0.42,rm*0.26,rm*0.5,0,0,7); g.stroke(); g.restore(); }
-    g.beginPath(); g.arc(cx,cyY,rm*0.22,0,7); g.stroke(); g.beginPath(); g.arc(cx,cyY,rm*0.08,0,7); g.fillStyle=BONE; g.fill(); }
-  function ringBand(g){ g.lineCap='butt';
-    for(const r of [R2,R1]){ g.strokeStyle='#000'; g.lineWidth=S*0.026; g.beginPath(); g.arc(cx,cyY,r,0,7); g.stroke(); }
-    for(const r of [R2,R1]){ g.strokeStyle=BONE; g.lineWidth=S*0.018; g.beginPath(); g.arc(cx,cyY,r,0,7); g.stroke(); } }
-  function drawCrossArt(){
-    xctx.clearRect(0,0,W,H); ringBand(xctx);
-    bar(xctx, cx-pw/2, aT, pw, aB-aT); bar(xctx, aL, cyY-pw/2, aR-aL, pw); medallion(xctx);
-    lctx.clearRect(0,0,W,H);
-    lctx.save(); try{ lctx.filter='blur('+(S*0.012*DPR)+'px)'; }catch(e){} lctx.drawImage(cross,0,0,W,H); lctx.restore();
-  }
-
-  const rivs=[];
-  function pour(x,y){ rivs.push({x,y,v:0.6+Math.random()*0.9,w:4+Math.random()*5,a:1,life:1}); }
-  function seg(g,x0,y0,x1,y1,w,a){ g.lineCap='round';
-    g.strokeStyle='rgba(110,0,0,'+(0.95*a)+')'; g.lineWidth=w; g.beginPath(); g.moveTo(x0,y0); g.lineTo(x1,y1); g.stroke();
-    g.strokeStyle='rgba(200,0,0,'+(0.9*a)+')'; g.lineWidth=Math.max(1,w*0.55); g.beginPath(); g.moveTo(x0,y0); g.lineTo(x1,y1); g.stroke();
-    g.strokeStyle='rgba(255,130,130,'+(0.35*a)+')'; g.lineWidth=Math.max(0.7,w*0.22); g.beginPath(); g.moveTo(x0-w*0.16,y0); g.lineTo(x1-w*0.16,y1); g.stroke(); }
-  function bead(g,x,y,r,a){ const gr=g.createRadialGradient(x-r*0.35,y-r*0.4,r*0.1,x,y,r);
-    gr.addColorStop(0,'rgba(255,150,150,'+a+')'); gr.addColorStop(0.35,'rgba(220,0,0,'+a+')'); gr.addColorStop(1,'rgba(110,0,0,'+a+')');
-    g.fillStyle=gr; g.beginPath(); g.arc(x,y,r,0,7); g.fill(); }
-
-  const zaps=[];
-  function ln(x1,y1,x2,y2,d,dep,p){ if(dep<=0){p.push([x2,y2]);return;} const mx=(x1+x2)/2+(Math.random()-0.5)*d,my=(y1+y2)/2+(Math.random()-0.5)*d; ln(x1,y1,mx,my,d/2,dep-1,p); ln(mx,my,x2,y2,d/2,dep-1,p); }
-  function fireZap(){ const x1=cx+(Math.random()-0.5)*S*0.5,y1=aT+Math.random()*S*0.2, x2=cx+(Math.random()-0.5)*S*0.5,y2=cyY+ (Math.random()-0.3)*S*0.5;
-    const p=[[x1,y1]]; ln(x1,y1,x2,y2,S*0.22,5,p); zaps.push({p,born:performance.now()}); }
-
-  const PH=[['ignite',2600],['lit',1800],['flood',3000],['drain',2500],['void',900]];
-  let pi=0, pt=0, last=performance.now(), V=0, G=0, nextFlick=0;
-  function enter(i){ pi=i; pt=0; if(PH[i][0]==='ignite'){ V=0; nextFlick=performance.now()+120; } if(PH[i][0]==='flood'){ rivs.length=0; fireZap(); } }
-
-  function frame(now){
-    const dt=Math.min(50,now-last); last=now; pt+=dt;
-    const name=PH[pi][0], dur=PH[pi][1], tf=pt/dur;
-    let floodF=0, drainD=0;
-
-    if(name==='ignite'){
-      if(tf<0.6){ V*=0.55; if(now>nextFlick){ V=0.35+Math.random()*0.6; if(Math.random()<0.6) fireZap(); nextFlick=now+(110+Math.random()*400*(1-tf)); } }
-      else { V+=(1-V)*0.18; }
-      G=V;
-    } else if(name==='lit'){ V+=(1-V)*0.3; if(Math.random()<0.03){ V=0.7; } G=1; }
-    else if(name==='flood'){ V=1; floodF=tf; G=1-floodF;
-      if(Math.random()<0.5){ const x=boxL+Math.random()*boxW; pour(x, boxT); } if(tf<0.12 && Math.random()<0.15) fireZap(); }
-    else if(name==='drain'){ V=0; drainD=tf; G=0;
-      const Yd=boxT+drainD*(ext-boxT); if(Math.random()<0.6){ pour(boxL+Math.random()*boxW, Yd); } }
-    else { V=0; G=0; }
-
-    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
-
-    if(name==='ignite'||name==='lit'||name==='flood'){
-      if(G>0){ const rg=ctx.createRadialGradient(cx,cyY,S*0.05,cx,cyY,S*0.55);
-        rg.addColorStop(0,'rgba(255,255,255,'+(0.26*G)+')'); rg.addColorStop(0.5,'rgba(255,120,120,'+(0.09*G)+')'); rg.addColorStop(1,'rgba(0,0,0,0)');
-        ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
-        ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=0.5*G; ctx.drawImage(bloom,0,0,W,H); ctx.restore(); }
-      ctx.globalAlpha=0.12+0.88*Math.max(0,Math.min(1,V)); ctx.drawImage(cross,0,0,W,H); ctx.globalAlpha=1;
-    }
-
-    if(name==='flood'){
-      const Yf=boxT+floodF*(ext-boxT);
-      const grd=ctx.createLinearGradient(0,boxT,0,Yf);
-      grd.addColorStop(0,'#7a0000'); grd.addColorStop(0.7,'#b00000'); grd.addColorStop(1,'#d80000');
-      ctx.fillStyle=grd; ctx.fillRect(boxL,boxT,boxW,Yf-boxT);
-      const band=ctx.createLinearGradient(0,Yf-S*0.02,0,Yf+S*0.03); band.addColorStop(0,'rgba(255,80,80,0.6)'); band.addColorStop(1,'rgba(216,0,0,0)');
-      ctx.fillStyle=band; ctx.fillRect(boxL,Yf-S*0.02,boxW,S*0.05);
-    } else if(name==='drain'){
-      const Yd=boxT+drainD*(ext-boxT);
-      const grd=ctx.createLinearGradient(0,Yd,0,H); grd.addColorStop(0,'#c00000'); grd.addColorStop(1,'#7a0000');
-      ctx.fillStyle=grd; ctx.fillRect(boxL,Yd,boxW,H-Yd+4);
-      const band=ctx.createLinearGradient(0,Yd-S*0.01,0,Yd+S*0.04); band.addColorStop(0,'rgba(255,90,90,0.5)'); band.addColorStop(1,'rgba(192,0,0,0)');
-      ctx.fillStyle=band; ctx.fillRect(boxL,Yd-S*0.01,boxW,S*0.05);
-    }
-
-    for(let k=rivs.length-1;k>=0;k--){ const d=rivs[k]; d.v+=0.03; const ny=d.y+d.v*(dt/16);
-      seg(ctx,d.x,d.y,d.x,ny,d.w,d.a); bead(ctx,d.x,ny,d.w*0.7,d.a); d.y=ny;
-      if(name==='flood'){ d.life-=dt*0.0009; d.a=Math.max(0,d.life); }
-      if(d.y>H+20||d.a<=0) rivs.splice(k,1); }
-
-    ctx.lineCap='round';
-    for(let k=zaps.length-1;k>=0;k--){ const z=zaps[k], age=now-z.born, life=1-age/200; if(life<=0){zaps.splice(k,1);continue;}
-      const fl=life*(0.6+0.4*Math.sin(age*0.9));
-      ctx.beginPath(); ctx.moveTo(z.p[0][0],z.p[0][1]); for(let i=1;i<z.p.length;i++) ctx.lineTo(z.p[i][0],z.p[i][1]);
-      ctx.shadowBlur=22; ctx.shadowColor='#ff1414'; ctx.strokeStyle='rgba(255,60,60,'+(0.5*fl)+')'; ctx.lineWidth=5; ctx.stroke();
-      ctx.shadowBlur=0; ctx.strokeStyle='rgba(255,255,255,'+(0.95*fl)+')'; ctx.lineWidth=1.6; ctx.stroke(); }
-
-    if(pt>=dur) enter((pi+1)%PH.length);
-    requestAnimationFrame(frame);
-  }
-
-  // reduced-motion: draw a single steady lit cross, no loop
-  function staticCross(){
-    build();
-    ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
-    ctx.save(); ctx.globalCompositeOperation='lighter'; ctx.globalAlpha=0.5; ctx.drawImage(bloom,0,0,W,H); ctx.restore();
-    ctx.drawImage(cross,0,0,W,H);
-  }
-
-  let ro;
-  addEventListener('resize', ()=>{ clearTimeout(ro); ro=setTimeout(()=>{ reduce?staticCross():build(); },150); });
-  if(reduce){ staticCross(); }
-  else { build(); enter(0); requestAnimationFrame(frame); }
-})();
-</script>
 </body>
 </html>
