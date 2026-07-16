@@ -1,6 +1,7 @@
 <div align="center">
 
 # DARK SEVEN
+## Installment I — DARK CORRIDORS
 
 ### *You Probably Think This Book Is About You* · Volume Three · The Culmination
 **A dark noir blood comic. Black and white, and the only color is blood.**
@@ -13,6 +14,20 @@
 **The Devil does not win.**
 
 </div>
+
+---
+
+## The series
+
+**DARK SEVEN is a seven-title series** — seven descents into a different corridor of the same mind. This is **Installment I: DARK CORRIDORS.** The color law, the veil, and the cross carry across all seven; the corridor changes. The other six are coming.
+
+## The trilogy — one record, three sides
+
+| Vol. | Title | Form | Where |
+|------|-------|------|-------|
+| **I** | *…This Book Is About You* | Noir vignette book — the movie | [Amazon](https://www.amazon.com/Probably-Think-This-Book-About/dp/B0GT25R5FD) |
+| **II** | *…This Song Is About You Too* | Noir song cycle — the album | [Amazon](https://a.co/d/0fZzwiAd) · [Site](https://thebardchat.github.io/you-probably-think-this-song-is-about-you-too/) |
+| **III** | **DARK SEVEN: DARK CORRIDORS** | Noir blood comic — the culmination *(you are here)* | [Site](https://thebardchat.github.io/dark_seven/) |
 
 ---
 

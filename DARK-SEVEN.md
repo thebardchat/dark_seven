@@ -1,6 +1,15 @@
 # DARK SEVEN
+## Installment I — **DARK CORRIDORS**
 ### You Probably Think This Book Is About You · Volume Three · The Culmination
 *It's About All Y'all! — Black & White & Red All Over*
+
+---
+
+## The Series
+
+**DARK SEVEN is a seven-title series.** Seven installments, each a descent into a different corridor of the same mind — seven ways down into the psyche. This one, the first, is **DARK CORRIDORS.** The color law, the veil, and the cross carry across all seven; the corridor changes. What's penciled and lettered below is DARK CORRIDORS. The other six are coming.
+
+> **Installment I of VII — DARK CORRIDORS.** *(Subtitle already on the cover, the character sheets, and the color-prompt footer.)*
 
 ---
 
