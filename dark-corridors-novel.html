@@ -1,0 +1,912 @@
+<!doctype html><html lang="en"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Dark Corridors</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap">
+
+<style>
+  :root {
+    --ground: #0D0D0D;
+    --text: #E8E3D8;
+    --text-muted: #A09890;
+    --red: #CC1A1A;
+    --band: #1A1A1A;
+    --rule: #2A2A2A;
+    --keeper-bg: #141414;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --ground: #0D0D0D;
+      --text: #E8E3D8;
+      --text-muted: #A09890;
+      --red: #CC1A1A;
+      --band: #1A1A1A;
+      --rule: #2A2A2A;
+      --keeper-bg: #141414;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0D0D0D;
+    --text: #E8E3D8;
+    --text-muted: #A09890;
+    --red: #CC1A1A;
+    --band: #1A1A1A;
+    --rule: #2A2A2A;
+    --keeper-bg: #141414;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    background: var(--ground);
+    color: var(--text);
+    font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    line-height: 1.85;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--text);
+    padding: 0 1.5rem 8rem;
+  }
+
+  /* ── FRONT MATTER ─────────────────────────── */
+
+  .front {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 10vh 0 8vh;
+    text-align: center;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 6rem;
+  }
+
+  .series-mark {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .title-block h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-wrap: balance;
+    margin-bottom: 1.2rem;
+  }
+
+  .title-block .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 3rem;
+  }
+
+  .red-rule {
+    width: 60px;
+    height: 3px;
+    background: var(--red);
+    margin: 0 auto 3rem;
+  }
+
+  .front-meta {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 2;
+  }
+
+  .front-scripture {
+    margin-top: 2.5rem;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--text-muted);
+    border-top: 1px solid var(--rule);
+    padding-top: 2rem;
+  }
+
+  /* ── CHAPTER STRUCTURE ───────────────────── */
+
+  .chapter {
+    max-width: 680px;
+    margin: 0 auto 8rem;
+  }
+
+  .chapter-header {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .chapter-number {
+    font-family: 'EB Garamond', serif;
+    font-size: 0.8rem;
+    font-style: italic;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .chapter-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.15;
+    color: var(--text);
+    text-wrap: balance;
+    margin-bottom: 0.6rem;
+  }
+
+  .chapter-date {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  /* ── PROSE BODY ───────────────────────────── */
+
+  .prose p {
+    margin-bottom: 1.6rem;
+    text-indent: 2em;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+
+  .prose p:first-of-type,
+  .prose p.no-indent {
+    text-indent: 0;
+  }
+
+  .prose p.scene-break {
+    text-indent: 0;
+    text-align: center;
+    color: var(--text-muted);
+    margin: 2.5rem 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+  }
+
+  /* ── KEEPER LINES ─────────────────────────── */
+
+  .keeper {
+    background: var(--keeper-bg);
+    border-left: 3px solid var(--red);
+    padding: 1.4rem 1.8rem 1.4rem 1.6rem;
+    margin: 2.8rem 0;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* ── CHAPTER BREAK BANDS ─────────────────── */
+
+  .chapter-break {
+    max-width: 680px;
+    margin: 0 auto 6rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  .chapter-break::before,
+  .chapter-break::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .chapter-break-mark {
+    width: 8px;
+    height: 8px;
+    background: var(--red);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* ── CLOSE / WITNESS ─────────────────────── */
+
+  .witness-close {
+    max-width: 680px;
+    margin: 0 auto 4rem;
+    padding: 4rem 0;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+  }
+
+  .witness-close p {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 2;
+  }
+
+  .end-mark {
+    display: block;
+    margin: 2.5rem auto 0;
+    width: 60px;
+    height: 3px;
+    background: var(--red);
+  }
+
+  /* ── CONSTITUTION MARK ───────────────────── */
+  .constitution-mark {
+    display: block;
+    text-align: center;
+    font-family: 'EB Garamond', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-top: 3rem;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 600px) {
+    html { font-size: 17px; }
+    body { padding: 0 1rem 6rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  FRONT MATTER                                  -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="front">
+  <p class="series-mark">Dark Seven &nbsp;·&nbsp; Volume One</p>
+  <div class="title-block">
+    <h1>Dark<br>Corridors</h1>
+    <p class="subtitle">a novel</p>
+  </div>
+  <div class="red-rule"></div>
+  <div class="front-meta">
+    <p>1996 — 2004</p>
+    <p>Rocket Valley, Alabama &nbsp;·&nbsp; The Show Me State</p>
+  </div>
+  <div class="front-scripture">
+    <p><em>Yea, though I walk through the valley of the shadow of death</em><br>
+    <em>I will fear no evil.</em><br>
+    — Psalm 23:4</p>
+    <br>
+    <p><em>The way of the wicked is as darkness:<br>
+    they know not at what they stumble.</em><br>
+    — Proverbs 4:19</p>
+  </div>
+
+  <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--rule);">
+    <p style="font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.9rem; color: var(--text-muted); line-height: 2;">For the ones who wrote the true thing and called it fiction anyway.</p>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER ONE — THE FLOOR                       -->
+<!-- ══════════════════════════════════════════════ -->
+
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter One</span>
+    <h2 class="chapter-title">The Floor</h2>
+    <p class="chapter-date">Rocket Valley, 1996</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">The floor came up fast.</p>
+
+    <p>Not the way floors come up in movies. No slow-motion drift, no swell in the soundtrack, no amber-filtered moment of tragedy to give the scene its shape. Just the sudden strike of hot asphalt, the hollow sound of impact, and the immediate heat of blood. And the raw, animal question of whether the leaking would ever stop.</p>
+
+    <p>The cutter meant for a box made its line. One clean horizontal cut.</p>
+
+    <p>The line never closed clean. It stayed raised, white against the rest of him, a permanent coordinate.</p>
+
+    <p>The body registered the violence before the mind could locate the geometry of the room, the people standing in it, or the sequence that had brought everything down this fast. The mind was still parsing. The body didn't wait. It was already flat against the asphalt.</p>
+
+    <p>Rocket Valley. 1996. Young men who had not yet learned that the world does not care how young you are when it decides to cut you open.</p>
+
+    <p>The blood was not dramatic. That is the truth nobody writes down. It was just there, pooling on the ground, spreading in the quiet, patient way fluid travels when gravity takes over the work. He looked at it the way a man looks at something he has no internal category for yet.</p>
+
+    <p>He had no category for this.</p>
+
+    <p>The scar it left never closed clean. That is not metaphor. That is the physical history of the man who carries this story — a line of raised tissue running down his spine, a place the skin remembers even when the mind is busy with other things. The cross that covers it comes later. That story is not this chapter. This chapter is only the floor, and the blood, and the boy on his back in the dark, learning for the first time what kind of world he had been born into.</p>
+
+    <p>Nineteen ninety-six is not a date in this book. It is a coordinate. Every corridor that follows is tethered to this single point. The cross will cover it nine years later. It will not erase what's underneath. The mark stays visible until the light finally detonates and swallows it whole — and that is a long way from here.</p>
+
+    <p>Right now it is only 1996. The asphalt is hot. The blood makes it cold. The boy is on his back in the dark.</p>
+
+    <p class="scene-break">— · —</p>
+
+    <p class="no-indent">The afternoon had no idea what it was about to become.</p>
+
+    <p>Warm day. Windows down. A six-lane road shimmering in bright afternoon light, a small car moving through all that ordinary white. Tapioca driving. The Carrier riding passenger. Two kids in the afternoon, ordinary as bread.</p>
+
+    <p>The errand was simple. His father's hand had passed him something across a console, voice flat and final: <em>Take this to the room. Don't touch it till you're there.</em> An errand. That was all it was supposed to be.</p>
+
+    <p class="no-indent"><em>Safe fun waiting for you in the Hotel Room. All ready.</em></p>
+
+    <p>Then the car pulled up alongside them, pacing.</p>
+
+    <p>A woman driving. A man folded low in the passenger seat, the kind of man just waiting for a reason. The boy's eyes flicked over — less than a look, a glance, the kind that costs nothing on a normal Tuesday. The man in the passenger seat took it wrong. Took it as territory. Took it as a challenge written in the language of a world the boy hadn't known he'd entered.</p>
+
+    <p>The bird came up over the door.</p>
+
+    <p>The boy — young, dumb, alive in the way that has no sense of consequence — flipped it right back. And behind the man's eyes, the rage caught, hot and instant and out of all proportion to a look on a bright afternoon. Some men are just holding the match. They're only waiting for a room to walk into.</p>
+
+    <p>The passenger hauled himself up onto the window sill, half out of the moving car, hurling something at the truck. Something cracked off the windshield. He waved — <em>come on, up here</em> — and the boy read it as meant for him.</p>
+
+    <p>It wasn't.</p>
+
+    <p>A second car was already moving. Long and full, coming up fast from behind like dogs let off a chain. Six, seven men inside it, faces set. This had never been one man's temper. This was a hunt. With more teeth than the road could see yet.</p>
+
+    <p>The long car whipped around in front and stood on the brakes. The small car boxed in — no room, no exit, no version of what happened next that didn't start with the passenger window.</p>
+
+    <p>A shape at his window. A line of light in its hand. Before his brain could file the shape as a blade — it was through the open window and through his arm. Muscle, then the deep cold wrongness of bone. Blood sheeting off the elbow onto the door, onto the lane.</p>
+
+    <p>Then Tapioca's voice, wild and certain:</p>
+
+    <p><em>Get out — we're surrounded.</em></p>
+
+    <p>So they got out.</p>
+
+    <p class="no-indent">4:15 PM. Senior Prom Night.</p>
+
+    <p>Two boys stepping into the middle of six screaming lanes, the whole carload closing on them from every side. The horns started. The horns never stopped. A hundred strangers watching from inside their glass and steel, leaning on the only language they had. It changed nothing. He registered it only as weather.</p>
+
+    <p>The first man jumped him. A second swung — a weapon still in his fist, cracking off the side of his head. White flash. Taste of pennies.</p>
+
+    <p>He got his hands into the first man anyway. Picked him clean off the road, slammed him onto the asphalt, dropped a knee, closed a hand on the throat. The man's heels were drumming the road. The boy was winning this one — with zero thoughts of stopping.</p>
+
+    <p>Then he looked up and saw them.</p>
+
+    <p>They had Tapioca.</p>
+
+    <p>Surrounded getting cut and stabbed. The boy looked at the man beneath him — the choke, the sure outcome he had in his hands — and he let go. Released the throat. Turned loose the sure thing and went toward his friend instead.</p>
+
+    <div class="keeper">
+      I let go of the sure thing to save my friend. The only math I've ever known how to do.
+    </div>
+
+    <p>The instant he turned loose — a hit from the blind side. He got under it, lifted the new man clean off his feet, and threw him into the oncoming lane. A body in the air over black asphalt. The horns. Always the horns — he hit the attacker with Fists of Rage as the boy mounted the attacker.</p>
+
+    <p>From behind, a fist grabbed his shirt and hauled it up, baring his back. What happened next was so soft-feeling it barely registered — a line drawn down the spine, not a stab but a drawing, slow and bright, the blade doing its slow geography. Then another line across the shoulder blade, the blood running warm into his waistband before the pain even filed its report.</p>
+
+    <p>Then a fist in his hair, hauling. The head snapped back. The blade opened the back of his skull, crown to nape — one long cold unzipping. The world tipped. Sky where the asphalt should be. A warm curtain coming down over one eye.</p>
+
+    <p>He could feel the neck exposed. Could feel the throat pulled long and bared to the white afternoon. He understood, in the wordless way the body understands before the mind catches up, that this was where the night had always been driving. The next cut was the last one.</p>
+
+    <p>It never fell.</p>
+
+    <p>Tapioca came over the roof of a car.</p>
+
+    <p>Over it — spending a body he had no business still standing in — clean over the whole car, arms wide, landing on the man with the blade. Into his head. The knife went wide. The throat closed — no lit skull from Tapioca's blow.</p>
+
+    <div class="keeper">
+      Somebody who had every reason to save his own skin spent it instead. Came over the car for me. I was young. I learned the only theology I've ever fully trusted: the finish doesn't have to land.
+    </div>
+
+    <p>He came back down into his own body inside a lake of red. No choreography anymore — a drowning. Swinging every direction at once, blind in one eye, unable to tell his blood from theirs from the road's. In the fog, something went in that wasn't going to come out. Not a wound you point to on a chart. Something the afternoon had been carrying since the hand across the console, since the flat voice, since the hotel room he'd been hauling all day like it was ordinary. It went to the handle and stayed.</p>
+
+    <p>One more car locked up its brakes and screamed — long, human, wrong. Something in that sound broke the spell. The seven scattered back into the traffic they had come out of, gone as fast as they came.</p>
+
+    <p>Two boys left standing in the middle of a stopped highway, counting their own leaks.</p>
+
+    <p>What Tapioca carried out of that road is his own to tell.</p>
+
+    <p>The Carrier: the arm open to the bone. The spine. The shoulder blade. The scalp, crown to nape. The knife still in his back. Standing.</p>
+
+    <p>He got into the car. Put his hand on the gearbox. The knife was still in his back. Every shift was a fresh scream from an arm that was more open than closed — muscle and bone arguing through every gear. He drove. The red filling the seat. The red on the wheel. The white road unspooling ahead.</p>
+
+    <p>The next lot. The car stopping crooked. The door opening. The ground coming up to meet him.</p>
+
+    <p>A crowd gathered the way crowds do — too late and too loud. A face over him, a mouth moving, the sound going far away. The last thing in the world was the one color that had been in it the whole time.</p>
+
+    <p>And then the black.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER TWO — THE WIRE SHOP                   -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Two</span>
+    <h2 class="chapter-title">The First Son / The Early Cold / The Glass Ghost</h2>
+    <p class="chapter-date">September 1997 — 1999</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">September 1997. The First Son was born.</p>
+
+    <p>He was so proud he didn't know what to do with his hands.</p>
+
+    <p>Scared and proud at the same time — not competing feelings, the same feeling with two names. The boy was so small. He held him and did not know what to do. He was not good at being a father yet. He knew it in real time. He held him anyway.</p>
+
+    <p>Amazing. That is the only word that survives the translation. He would not trade it. Not a second. He only wished the tools had already been in place when the boy arrived — that the scar had already been processed, the hallways already walked, the lesson already learned. He got the child before he got the equipment. That's not a complaint. That's just the order it came in.</p>
+
+    <p>The Early Cold had a verdict ready before the closing argument. <em>You'll be nothing. Just like your father.</em> She delivered it clean, the way people deliver things they've been holding for a while. No heat. Just the sentence.</p>
+
+    <p>Thirteen months after the birth, the deadbolt closed. He picked up the pace because stopping meant sitting with the verdict. And the verdict was loud in a quiet room.</p>
+
+    <p>His own father lost the house. The bedrock. Gone.</p>
+
+    <p>Losing a man to death has a shape to it. You can point to the moment. You can hold the date in your hand like a stone. Losing a man to The Glass Ghost is something else entirely — you can see the body standing right in front of you and understand that nobody is home. The door is open and the room is empty. He's there and he's not there, and the version that's not there keeps winning, keeps taking ground, keeps burning down whatever the other version was trying to build.</p>
+
+    <div class="keeper">
+      I saw what The Glass Ghost did to the one person I looked up to. And it ended him.
+    </div>
+
+    <p>A doorframe. A man he recognized standing in it. The light wrong. The posture wrong. The room behind him empty in a way rooms shouldn't be. That image lives in the archive now — locked, irreducible, the kind of thing the mind photographs without being asked.</p>
+
+    <p>He understood something in that doorframe. He understood it the way a man understands something he does not yet have the language for — something he will spend the next several years slowly approaching from the outside, building the vocabulary word by word.</p>
+
+    <p>He understood that a substance could hollow a man out so completely that the man's whole body became a false front, a façade with nothing behind it. He understood this not as an abstraction, not as a warning label, but as a specific person he had loved. He saw the destination. He saw the end state. He filed it away in whatever part of him was still keeping notes.</p>
+
+    <p>And then he went back to Gateway Drive and sat at the spinning table in the dark.</p>
+
+    <p class="no-indent"><em>Nothing. Just like your father.</em></p>
+
+    <p class="no-indent">He sat with that a long time.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER FOUR — THE HOMESTEAD                  -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Three</span>
+    <h2 class="chapter-title">The Wire Shop</h2>
+    <p class="chapter-date">Rocket Valley, 1997</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">Getting up off the asphalt.</p>
+
+    <p>Not as a metaphor. Literally getting the boots underneath the hips, standing up, and putting on a collar. Running floor sales at The Wire Shop. Pushing pagers, cellular contracts, and plastic handsets across a laminate counter under the buzz of fluorescent ballasts.</p>
+
+    <p>Keeping the feet moving because stopping meant looking down at what was torn open underneath the shirt — and what was underneath was a fresh line that hadn't yet decided how much it was going to cost him.</p>
+
+    <p>The body learned the first rule early:</p>
+
+    <div class="keeper">
+      Motion is medication.
+    </div>
+
+    <p>Strange hours. Strange company. The First Son was alive somewhere in those years, growing up in time that the child support docket owned. He worked the counter and sent what the court said to send and watched the remainder disappear into shifts and bar tabs and transactions that weren't on any register.</p>
+
+    <p>The bars were friends the way the cold is warm when you've been outside long enough. They filled what needed filling. They never asked questions. They never kept promises either, but at the time those two things felt like the same animal.</p>
+
+    <p>Pain was easy to kill. That was the first and most dangerous truth the corridor taught him.</p>
+
+    <p>Far from The White. Closer to The Green — serving the needs of many, especially his own. A transaction at a time.</p>
+
+    <p>Gateway Drive. The first apartment with his name on it alone. Purple velvet couch. A mirror coffee table, circle-cut, mounted on a spin — the kind of furniture that tells you exactly what era it belongs to without a single word of explanation. The room had its own economy. The Wire Shop counter was the day job. The circle table was the night shift.</p>
+
+    <p>A house full of people with nobody in the room. Just his thoughts, getting louder.</p>
+
+    <p>The White moved in closer. The world of needy people to serve it got wider — especially The Industry. He met lots of friends that way. He met nobody that way. Both things true at the same time, and that contradiction sat in his chest and never asked permission.</p>
+
+    <p>The feet kept moving. The counter kept turning. The ballasts kept buzzing their one indifferent note over a man standing in fluorescent light, building a habit one night at a time.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER THREE — THE FIRST SON                 -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Four</span>
+    <h2 class="chapter-title">Two Engines &amp; The Limestone Field</h2>
+    <p class="chapter-date">1998 — 2002</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">He worked two shifts because the arithmetic offered no other exit.</p>
+
+    <p>The Red Label Line. Midnight shifts. HAZMAT certified. Sorting, stacking, and throwing heavy freight in the freezing terminal bays before the sun had cleared the tree line. Memorizing chemical placard numbers, running the sorting belts, taking the physical routes nobody else bid on because the dangerous freight carried a pay differential — and the legal ledger didn't care where the money came from, only that it cleared.</p>
+
+    <p>Then the daytime shift at The High-Rise Carrier. The retail uniform, the headset, the sales targets, and the walk-in traffic looking for someone to absorb their complaints.</p>
+
+    <p>He ran both operations side-by-side. For four solid years.</p>
+
+    <p>He was trying to cut a path out. The Limestone Field. College football pads, lecture halls, a four-year degree. The clean blueprint of a man who could stand in front of his firstborn years down the road and say it out loud.</p>
+
+    <div class="keeper">
+      I built a wall. I didn't just hide behind one.
+    </div>
+
+    <p>He made real friends there. That part was true. He ran stairs for being late to practice — always late, always running, always arriving at something already in motion. The Limestone Field had a version of him that could have gone somewhere. But the Devil moved there with him.</p>
+
+    <p>Whatever was already in the arsenal — The Green, the bars, the spinning table — the Limestone Field added a new elevation. The White arrived in full. The kind that made you the happiest person in any room. The kind that made the getting-down afterward feel like a tax worth paying, until it wasn't, and by the time it wasn't the habit was already a resident. Already paying rent, already comfortable, already looking at you like you owe it something.</p>
+
+    <p>The blueprint required tuition. Tuition required cash. Cash required running two engines until the bearings glowed.</p>
+
+    <p>The courtroom did not care about the blueprint. It noticed the income from the year of double shifts. It did not notice what those shifts had cost. They taxed the dream at the rate of his highest exhaustion.</p>
+
+    <p>He sat at the defendant's table in the gray county courthouse and watched the gavel fall on an income he no longer had, for an ambition they had no interest in preserving. One isolated number, written in the ledger in the language the court used — cold, abstract, permanent. A figure that now owned a portion of everything he would ever earn.</p>
+
+    <p>He closed the textbooks. Packed the gear. Went straight back to the loading dock.</p>
+
+    <p>The degree stayed in the dirt. The Limestone Field became a ghost corridor. Another hallway that had looked like an exit and turned out to be another way deeper in.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER SIX — THE LOOSE SCREW                 -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Five</span>
+    <h2 class="chapter-title">The Homestead</h2>
+    <p class="chapter-date">2000</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">One day.</p>
+
+    <p>No truck. No help. No one coming. One day to pull a life out of the walls before the Glass Ghost's creditors arrived with a different plan for everything inside.</p>
+
+    <p>What they got instead was strangers. An impromptu estate sale conducted in the living room of the house he grew up in — people he had never seen walking the hallways, opening drawers, holding up the artifacts of a family and naming a price. Cash going directly into the hand of a man they all knew would be on Gateway Drive with it before dark. Everyone knew. The transaction happened anyway.</p>
+
+    <p>Trophies. Plaques. Medals. Honors. A lifetime in sport — every game played, every line run, every hit taken, every morning woken up before light to be somewhere and be something — laid out on tables. Strangers turned them over in their hands. Checked for scratches. Put them back down or tucked them under an arm. The names on the back meant nothing to anyone in that room except the boy watching it happen.</p>
+
+    <p>His mother had built a pond in the backyard with her own hands. His father had built a Tiki Bar on the side of the house. Evidence of people who had made something, who had stood in a yard and decided to build rather than leave. It was all still there. The pond. The bar. The yard. The glass gone out of the man who built it.</p>
+
+    <p>The neighbors didn't come out.</p>
+
+    <p>Not one. People who had watched him learn to walk, who had eaten at that table, who had borrowed tools from that garage and brought casseroles to that door — they went inside and pulled their blinds. The street was quiet the way streets go quiet when everyone decides not to see something. That silence was louder than the strangers. Louder than the cash. Louder than anything that happened inside that house that day. It is still the loudest thing he has ever heard.</p>
+
+    <p>The house was full when he walked out.</p>
+
+    <p>They locked the door behind him like he was the one who didn't belong there.</p>
+
+    <div class="keeper">
+      I walked away from the house I grew up in while strangers picked through what was left of us. The neighbors pulled their blinds. That's the one I still carry.
+    </div>
+
+    <p>He kept moving. Motion is medication. The body had already learned the first rule. The body applied it even when the mind wasn't sure there was anything left worth applying it to.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER FIVE — TWO ENGINES / THE LIMESTONE    -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Six</span>
+    <h2 class="chapter-title">The Loose Screw</h2>
+    <p class="chapter-date">2000 — 2001</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">The party circuit. Nightclubs, bass bins, parking lot exhausts, and after-hours apartments that smelled like cigarettes and spilled rum and whatever the night had promised before it cashed the check.</p>
+
+    <p>The Loose Screw sat in the passenger seat and worked the frame the way rust works — slow, daily, committed. Every bar booth. Every morning drive. Every quiet second between songs. You are nothing. You will always be nothing. You should be grateful I stay.</p>
+
+    <p>She hit him.</p>
+
+    <p>More than once. More than twice. The math stopped mattering around the time the math started feeling normal.</p>
+
+    <p>The last time was the last time. That is the whole sentence.</p>
+
+    <p>He got the apartment. His sister moved in. Real blood, solid ground — the kind that doesn't require maintenance or explanation. Just presence. She was there.</p>
+
+    <p>Every other weekend The First Son came. Forty-eight hours where the man in the apartment had to be a different version of himself — steadier, quieter, the kind of man a boy could rest against. He wasn't good at it yet. He showed up anyway. That's what the record shows.</p>
+
+    <p>He showed up.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER SEVEN — THE KISS OF DEATH             -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Seven</span>
+    <h2 class="chapter-title">The Kiss of Death</h2>
+    <p class="chapter-date">Pre-Graduation — High School. Then Seven Years Later.</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">This happened before graduation.</p>
+
+    <p>He was still a kid when The Kiss of Death walked up the breezeway. He heard the steps. He did not hide. He walked out and got in the man's face.</p>
+
+    <p><em>So you're here to shoot me.</em></p>
+
+    <p>The man showed him the gun. Didn't say a word. Just showed it.</p>
+
+    <p><em>Then do it.</em></p>
+
+    <p>He didn't.</p>
+
+    <p>The gun went back. The man left. The boy walked inside. The other man drove away. That was the day.</p>
+
+    <p>She had been at the end of the street. Waiting on it to be done.</p>
+
+    <p class="scene-break">— · —</p>
+
+    <p class="no-indent">Seven years later — <em>seven years</em> — he and The Architect got back together.</p>
+
+    <p>They had a son. The Boy in the Wind.</p>
+
+    <p>For a moment it looked like something that could work. The First Son and The Boy in the Wind got along — two brothers who hadn't had a reason to be enemies yet. He could love both his sons in the same room at the same time. He didn't clock the exits.</p>
+
+    <p>He should have clocked the exits.</p>
+
+    <p>The weekends started going wrong. Every weekend he had The First Son, she left. Not a coincidence — a policy. She started telling him to choose. The First Son was not allowed in The Show Me State — that was the wall — and when she moved, the wall moved with her.</p>
+
+    <p>He could not choose. He would never choose. A man who throws himself into six lanes of traffic to save a friend does not choose between his children. So when she moved, he moved with her, and he drove back to Rocket Valley for The First Son, and that was the arrangement. Until it wasn't.</p>
+
+    <p>Until the day the arrangement ended in a sentence.</p>
+
+    <div class="keeper">
+      Be with my illiterate redneck faggot son.
+    </div>
+
+    <p>He slapped her. He ran out of the house and into a bar and drowned. Then the moving started. Then homeless came around. Then the only remaining direction was south.</p>
+
+    <div class="keeper">
+      Tuck tail and run.
+    </div>
+
+    <p>He drove back toward Alabama in the dark. Nothing in the car that amounted to a plan. Two sons behind walls he hadn't built and couldn't climb.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER EIGHT — THE IRON YARD                 -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Eight</span>
+    <h2 class="chapter-title">The Show Me State</h2>
+    <p class="chapter-date">2004</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">He packed the car and drove north into exile because The Boy in the Wind was across the state line.</p>
+
+    <p>That was the whole reason. The only compass he had left. He drove north. He crossed the line. He showed up.</p>
+
+    <p>She owned the lease. He stayed within the four walls, raising the boy while she worked the day shift. She told him he was worthless. Daily. Like clockwork.</p>
+
+    <p>The dark taverns became the only sanctuary. A brutal, smoky holding cell when the walls of her house started closing in and the word <em>worthless</em> rang too loud in the drywall. Bonfires out in the country. The back rooms of the Gentlemen's Club. A rough, desperate version of himself running through the gravel lots — a man he will not defend and will not deny.</p>
+
+    <p>Then she orchestrated the evacuation.</p>
+
+    <p>Surgical. He never saw the strike coming. Locks changed, rooms emptied, the child removed while he was out of the house. He returned to a structure scrubbed of his existence. The bed. The clothes. The small things that proved a person had been living there. Gone or moved outside the door in a black garbage bag, depending on its value.</p>
+
+    <p>Homeless on the Eastside.</p>
+
+    <p>He stepped behind the bar. Pulling taps, slinging rail liquor at three hundred and fifty dollars a night. He worked the rush, ran the room, traded drinks for survival in a city where nobody knew his real name.</p>
+
+    <div class="keeper">
+      Strip bars serve ribeye at 7am if you stay up long enough.
+    </div>
+
+    <p>Then she told him she was carrying his child again.</p>
+
+    <p>He was so excited.</p>
+
+    <p>He pleaded. He laid every argument down. He put every card on the table he had ever held and said every true thing available to him.</p>
+
+    <p>The clinic doors closed anyway.</p>
+
+    <div class="keeper">
+      The day I died more.
+    </div>
+
+    <div class="keeper">
+      With every breath I took imagining the breaths being stolen from my unborn child with nothing I could do to stop it.
+    </div>
+
+    <p>She packed the remainder of her life.</p>
+
+    <div class="keeper">
+      She disappeared again. Moved.
+    </div>
+
+    <p>He walked out into the parking lot. Car dead. Pockets empty. The killer running through his bloodstream. Every road on the map ending in a wall.</p>
+
+    <p>He stood in the dark and the dark just looked back at him.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER ELEVEN — THE CROSS                    -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Nine</span>
+    <h2 class="chapter-title">The Iron Yard</h2>
+    <p class="chapter-date">November 2003 — 2004</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">He was a natural on the asphalt.</p>
+
+    <p>The Iron Yard. North Alabama automotive lot. He could read the posture of a customer before they hit the showroom glass, could locate the exact space between what a buyer said they could afford and what they were terrified of losing. Commission was the only vehicle that paid fast enough to keep the legal threats at bay. He worked it because he was good at it, and being good at something — even just this — was something to hold.</p>
+
+    <p>Then the floor buckled.</p>
+
+    <p>Painkillers first. Then selling to support the habit. The numbers on the ledger required a supplement, and the supplement required a market, and the market was everywhere once you knew how to look. The mark landed in the state database. A permanent record does not negotiate. It waits quietly for twenty years, showing up at background checks and HR desks with the patience of a man who has nowhere else to be.</p>
+
+    <p>He didn't realize yet that the mark was permanent.</p>
+
+    <div class="keeper">
+      The pain was hard to wash away without a killer. You put the two together.
+    </div>
+
+    <p>The killer didn't arrive with sirens. It never does. It came as a quiet liquid pour at the end of a fourteen-hour turn. Something to take the jagged edges off the court docket, to soften the memory of the gun at the door, to put a buffer between his ribs and the woman holding his second son behind a state line he couldn't cross.</p>
+
+    <p>The killer was patient. It had all the time in the world, and it knew something the man did not: that a thing you pick up to manage the pain has no interest in the pain ending. It makes itself necessary. It is very good at this.</p>
+
+    <p>A thin red line entered the frame. Quiet. Faint. Settling into the ink. The man didn't see it yet. He was still looking elsewhere — at the debt, at the docket, at the spinning table in the dark.</p>
+
+    <p>The line waited.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER NINE — THE BOY IN THE WIND            -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Ten</span>
+    <h2 class="chapter-title">The Boy in the Wind</h2>
+    <p class="chapter-date">2003</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">The war started before the child had a pulse on an ultrasound.</p>
+
+    <p>He fought her off the clinic steps. He fought her off the adoption agencies. He stood in the living room and laid his title down with both hands: <em>I will take full custody. Sign him over to me.</em></p>
+
+    <p>She looked him in the face and said: <em>Never.</em></p>
+
+    <p>The Boy in the Wind was born anyway. Dropped straight into a crossfire zeroed in before his lungs took their first breath.</p>
+
+    <p>He held him.</p>
+
+    <p>Family had been told to go home. Not allowed in — not today, not on her terms. Just the two of them in that room. The boy looked up. He looked back.</p>
+
+    <p>Just the two of them, in the space she couldn't take.</p>
+
+    <p><em>Amazing.</em></p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CHAPTER TEN — THE SHOW ME STATE               -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Eleven</span>
+    <h2 class="chapter-title">Tuck Tail and Run</h2>
+    <p class="chapter-date">October 2004</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">He turned the radiator south and drove back toward Alabama.</p>
+
+    <p>Not as a conqueror. Not with a single wound stitched closed, a single ledger balanced, a single thing in the car that amounted to a plan. He drove south because south was the only direction left, and the only thing waiting there was the starting point — the asphalt, the town that had cut him open and kept going.</p>
+
+    <div class="keeper">
+      Tuck tail and run.
+    </div>
+
+    <p>She had drifted back to Rocket Valley too. He went straight back into the fire to find his boy. She raised the walls and guarded the perimeter.</p>
+
+    <div class="keeper">
+      The hallway didn't end when he crossed the state line. It just changed its wallpaper.
+    </div>
+
+    <p>He kept walking.</p>
+  </div>
+</article>
+<div class="chapter-break"><div class="chapter-break-mark"></div></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  CLOSE — THE FIRST WITNESS                     -->
+<!-- ══════════════════════════════════════════════ -->
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Chapter Twelve</span>
+    <h2 class="chapter-title">The Cross</h2>
+    <p class="chapter-date">The Due Date. Rocket Valley.</p>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">The due date came around on the calendar. He sat down.</p>
+
+    <p>The Celtic Cross went on his back.</p>
+
+    <p>A grave marker. For a child who never breathed. Pressed directly over the scar that had opened the whole book — the line drawn down the spine in the middle of six screaming lanes in 1996 — sealed under ink and faith and grief so total it required permanent skin to hold it.</p>
+
+    <p>Two wounds. One mark. Stacked.</p>
+
+    <p>The cross covers the wound. The wound is still there. The cross knows.</p>
+
+    <p>The needle went in. The cross took shape over the spine. Below it — invisible now, but there always — the 1996 line. The child's due date above it. The blade's first mark below. Buried under the only thing he had left to put over it.</p>
+
+    <p>Not redemption. Not yet. Not in this book.</p>
+
+    <p>This is only the headstone. Worn on a living man's back.</p>
+  </div>
+</article>
+<article class="chapter">
+  <header class="chapter-header">
+    <span class="chapter-number">Close</span>
+    <h2 class="chapter-title">The First Witness</h2>
+  </header>
+
+  <div class="prose">
+    <p class="no-indent">At the very end of the corridor, The Old Soldier is standing in the dark.</p>
+
+    <p>He was there when the blade hit the asphalt in 1996. He saw the blood. He saw the gun at the apartment door. He saw the dead car in a city where nobody knew the man's name. He saw the cross go on the back and he knows what it marks. Both things. He carries that without comment.</p>
+
+    <p>He does not speak. He does not step in. A witness bears the record. Holds the fact of a thing against the world's tendency to forget, to rewrite, to soften until it doesn't hurt anymore. He keeps the account honest.</p>
+
+    <p>No white ink. Not here. Not in this book. Grace has not been named. The criminal record is active. The boys are on the wrong side of walls he didn't build. The killer is in his blood. The cross on his back is grief, not shield.</p>
+
+    <p>Not yet.</p>
+
+    <div class="keeper">
+      The dark doesn't owe you a resolution. It just asks if you're still standing.
+    </div>
+
+    <p>Barely. The cross a grave for two things. The killer in his veins. The scar below the ink that started the whole book — covered but never closed, present always, waiting under the only thing he had left to put over it.</p>
+
+    <p>Still standing.</p>
+
+    <p>The Old Soldier watches from the edge of the frame. Nods once. Not approval. Not comfort.</p>
+
+    <p>Only: <em>I saw it. I have it. The record is kept.</em></p>
+  </div>
+</article>
+
+
+<!-- ══════════════════════════════════════════════ -->
+<!--  WITNESS CLOSE                                 -->
+<!-- ══════════════════════════════════════════════ -->
+
+<div class="witness-close">
+  <p><em>Dark Seven — Volume One — Dark Corridors</em></p>
+  <p><em>1996 — 2004</em></p>
+  <p><em>Rocket Valley, Alabama &nbsp;·&nbsp; The Show Me State</em></p>
+  <span class="end-mark"></span>
+  <span class="constitution-mark">◆ TheShaneBrain Constitution — All Rights Reserved</span>
+</div>
+
+</body></html>
